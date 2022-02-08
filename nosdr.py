@@ -32,7 +32,7 @@ def runClassifier(interpreter,labels,x):
 def normalize(x):
     x -= np.mean(x)
     x /= np.sqrt(np.mean(np.absolute(x)))
-    IQ = np.array((2,1024), dtype=numpy.float32)
+    IQ = np.array((2,1024), dtype=np.float32)
     IQ[0,:] = np.real(x)
     IQ[1,:] = np.imag(x)
     return IQ
