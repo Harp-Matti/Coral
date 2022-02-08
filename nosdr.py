@@ -10,7 +10,7 @@ import numpy as np #use numpy for buffers
 from timeit import default_timer as time
 
 #create a re-usable buffer for rx samples
-buff = np.array([0]*1024, numpy.complex64)
+buff = np.array([0]*1024, np.complex64)
 
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
