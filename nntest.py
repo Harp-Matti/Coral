@@ -19,7 +19,7 @@ for result in results: print(result)
 
 #create device instance
 #args can be user defined or from the enumeration result
-args = dict(driver="SDRplay")
+args = dict(driver="sdrplay")
 sdr = SoapySDR.Device(args)
 #sdr = sp.SoapyDevice('driver=sdrplay')
 
