@@ -48,8 +48,3 @@ for i in range(N_classifications):
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
-
-#shutdown the stream
-sdr.deactivateStream(rxStream) #stop streaming
-sdr.closeStream(rxStream)
-#sdr.stop_stream()
