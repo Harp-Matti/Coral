@@ -2,7 +2,7 @@
 %include std_vector.i
 
 namespace std {
-   %template(ComplexVector) vector<complex<float>>;
+   %template(FloatVector) vector<float>;
 }
 
 %{
