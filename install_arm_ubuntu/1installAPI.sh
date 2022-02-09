@@ -7,6 +7,8 @@
 
 # clear the terminal
 clear
+sudo apt-get update
+sudo apt-get dist-upgrade
 # say what we are doing
 echo "SDRplay script to download and run the RSP API Installer - v0.3"
 # copy restart script
