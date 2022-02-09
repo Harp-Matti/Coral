@@ -39,7 +39,7 @@ cd ~/Dev
 # remove any previous SoapySDRPlay folder
 rm -rf SoapySDRPlay3
 # download SoapySDRPlay (for API 3)
-git clone https://github.com/SDRplay/SoapySDRPlay3
+git clone https://github.com/pothosware/SoapySDRPlay3
 # change to the SoapySDRPlay folder
 cd SoapySDRPlay3
 # create the build folder
