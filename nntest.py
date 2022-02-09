@@ -27,7 +27,7 @@ interpreter = edgetpu.make_interpreter(model_file)
 interpreter.allocate_tensors()
 
 def runClassifier(interpreter,labels,x):
-    common.set_input(interpreter, image)
+    common.set_input(interpreter, x)
     interpreter.invoke()
     classes = classify.get_classes(interpreter, top_k=1)
     for c in classes:
