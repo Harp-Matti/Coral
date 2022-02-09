@@ -52,8 +52,10 @@ public:
 		return ret;
 	}
 	
-	std::complex<float>* read() {
-		return buff;	
+	std::vector<std::complex<float>> read() {
+		std::vector<std::complex<float>> output(buff.size());
+    		output.insert(output.begin(), std::begin(buff), std::end(buff));
+		return output;	
 	}
 	
 	double getSampleRate(){
