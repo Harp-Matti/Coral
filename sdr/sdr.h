@@ -42,13 +42,17 @@ public:
 		SoapySDR::Device::unmake(sdr);
 	}
 	
-	int receiveSamples() {
+	int receive() {
 		void *buffs[] = {buff};
 		int flags;
 		long long time_ns;
 		int ret = sdr->readStream(rx_stream, buffs, 1024, flags, time_ns, 1e5);
-		printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
+		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
+	}
+	
+	std::complex<float> read() {
+		return buff;	
 	}
 	
 	double getSampleRate(){
