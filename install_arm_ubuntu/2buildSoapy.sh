@@ -37,11 +37,11 @@ echo "SoapySDR build finished. Continuing to build SoapySDRPlay..."
 # change to the Dev folder again
 cd ~/Dev
 # remove any previous SoapySDRPlay folder
-rm -rf SoapySDRPlay3
+rm -rf SoapySDRPlay
 # download SoapySDRPlay (for API 3)
-git clone https://github.com/pothosware/SoapySDRPlay3
+git clone https://github.com/pothosware/SoapySDRPlay
 # change to the SoapySDRPlay folder
-cd SoapySDRPlay3
+cd SoapySDRPlay
 # create the build folder
 mkdir build
 # change to the build folder
