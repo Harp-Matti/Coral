@@ -53,7 +53,7 @@ public:
 	}
 	
 	std::vector<std::complex<float>> read() {
-		std::vector<std::complex<float>> output(buff.size());
+		std::vector<std::complex<float>> output;
     		output.insert(output.begin(), std::begin(buff), std::end(buff));
 		return output;	
 	}
