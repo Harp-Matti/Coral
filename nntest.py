@@ -5,12 +5,12 @@ from pycoral.utils import dataset
 from pycoral.adapters import common
 from pycoral.adapters import classify
 
-import sdr
+from sdr.sdr import SDR
 import numpy as np #use numpy for buffers
 
 from timeit import default_timer as time
 
-device = sdr.SDR()
+device = SDR()
 
 #apply settings
 device.setSampleRate(1e6)
