@@ -1,4 +1,5 @@
 %module sdr
+%include std_vector.i
 
 %{
 #include "sdr.h"
