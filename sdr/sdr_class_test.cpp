@@ -10,6 +10,5 @@ int main()
 	std::cout << S.getFrequency() << std::endl;
 	std::cout << S.getSampleRate() << std::endl;
 	std::cout << S.receiveSamples() << std::endl;
-	~S();
 	return 0;
 }
