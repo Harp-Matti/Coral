@@ -8,7 +8,7 @@ from pycoral.adapters import classify
 from sdr.sdr import SDR
 import numpy as np #use numpy for buffers
 
-from timeit import default_timer as time
+from timeit import default_timer as timer
 
 device = SDR()
 
