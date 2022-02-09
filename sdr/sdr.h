@@ -52,9 +52,12 @@ public:
 		return ret;
 	}
 	
-	std::vector<std::complex<float>> read() {
-		std::vector<std::complex<float>> output;
-    		output.insert(output.begin(), std::begin(buff), std::end(buff));
+	std::vector<float> read() {
+		std::vector<float> output;
+    		for (int i=0; i<1024; i++){
+			output.push_back(buff[i].real());
+			output.push_back(buff[i].imag());
+		}
 		return output;	
 	}
 	
