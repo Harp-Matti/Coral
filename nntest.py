@@ -36,7 +36,7 @@ def runClassifier(interpreter,labels,x):
 def normalize(x):
     x.reshape((2,1024))
     x -= np.mean(x,1,keepdims=True)
-    x /= np.sqrt(np.mean(np.sum(np.power(x,2)))
+    x /= np.sqrt(np.mean(np.sum(np.power(x,2))))
     return x
 
 N_classifications = 10
