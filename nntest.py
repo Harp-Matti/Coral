@@ -44,7 +44,7 @@ start = timer()
 #receive some samples
 for i in range(N_classifications):
     device.receive()
-    runClassifier(interpreter,labels,normalize(np.array(device.read())))
+    runClassifier(interpreter,labels,normalize(np.asarray(device.read()).reshape((2,1024))))
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
