@@ -26,7 +26,7 @@ public:
 		}
 		
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
-		setBufferSize(1024);
+		//setBufferSize(1024);
 		
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
 		if(rx_stream == NULL)
@@ -47,12 +47,12 @@ public:
 		void *buffs[] = {buff};
 		int flags;
 		long long time_ns;
-		int ret = sdr->readStream(rx_stream, buffs, buff.size(), flags, time_ns, 1e5);
+		int ret = sdr->readStream(rx_stream, buffs, 1024, flags, time_ns, 1e5);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
 	
-	std::complex<float> read() {
+	std::complex<float>* read() {
 		return buff;	
 	}
 	
@@ -68,6 +68,7 @@ public:
 		return sdr->getFrequency(SOAPY_SDR_RX, 0);
 	}
 	
+	/*
 	int getBufferSize(){
 		return buff.size();
 	}
@@ -76,6 +77,7 @@ public:
 		std::complex<float> new_buffer(size); 
 		buff = new_buffer;	
 	}
+	*/
 	
 	void setFrequency(double freq){
 		if (freq >= ranges[0].minimum() && freq <= ranges[0].maximum()){
@@ -88,5 +90,5 @@ public:
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList ranges;
 	SoapySDR::Stream *rx_stream;
-	std::complex<float> buff;
+	std::complex<float> buff[1024];
 };
