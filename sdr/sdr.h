@@ -69,20 +69,17 @@ public:
 		sdr->setSampleRate(SOAPY_SDR_RX, 0, rate);
 	}
 	
+	double getBandwidth(){
+		return sdr->getSampleRate(SOAPY_SDR_RX, 0);
+	}
+	
+	void setBandwidth(double bw){
+		sdr->setBandwidth(SOAPY_SDR_RX, 0, bw);
+	}
+	
 	double getFrequency(){
 		return sdr->getFrequency(SOAPY_SDR_RX, 0);
 	}
-	
-	/*
-	int getBufferSize(){
-		return buff.size();
-	}
-	
-	void setBufferSize(int size){
-		std::complex<float> new_buffer(size); 
-		buff = new_buffer;	
-	}
-	*/
 	
 	void setFrequency(double freq){
 		if (freq >= ranges[0].minimum() && freq <= ranges[0].maximum()){
