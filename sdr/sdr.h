@@ -66,7 +66,9 @@ public:
 	}
 	
 	void setSampleRate(double rate){
+		sdr->deactivateStream(rx_stream, 0, 0);
 		sdr->setSampleRate(SOAPY_SDR_RX, 0, rate);
+		sdr->activateStream(rx_stream, 0, 0, 0);
 	}
 	
 	double getBandwidth(){
@@ -74,7 +76,9 @@ public:
 	}
 	
 	void setBandwidth(double bw){
+		sdr->deactivateStream(rx_stream, 0, 0);
 		sdr->setBandwidth(SOAPY_SDR_RX, 0, bw);
+		sdr->activateStream(rx_stream, 0, 0, 0);
 	}
 	
 	double getFrequency(){
@@ -83,7 +87,9 @@ public:
 	
 	void setFrequency(double freq){
 		if (freq >= ranges[0].minimum() && freq <= ranges[0].maximum()){
+			sdr->deactivateStream(rx_stream, 0, 0);
 			sdr->setFrequency(SOAPY_SDR_RX, 0, freq);
+			sdr->activateStream(rx_stream, 0, 0, 0);
 		} else {
 			fprintf(stderr, "Frequency out of bounds\n");
 		}
