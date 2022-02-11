@@ -46,9 +46,8 @@ N_classifications = 11
 start = timer()
 #receive some samples
 for i in range(N_classifications):
-    print(device.receive())
-    #if device.receive() is not 1024:
-    #    print('Receive failed')
+    if device.receive() is not 1024:
+        print('Receive failed')
     #device.setFrequency(1.0e9+(i+1)*10.0e6)    
     runClassifier(interpreter,labels,normalize(np.asarray(device.read()).reshape((2,1024))))
 
