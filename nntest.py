@@ -46,8 +46,8 @@ start = timer()
 for i in range(N_classifications):
     if device.receive() is not 1024:
         print('Receive failed')
+    device.setFrequency(1.0e9+(i+1)*10.0e6)    
     runClassifier(interpreter,labels,normalize(np.asarray(device.read()).reshape((2,1024))))
-    device.setFrequency(1.0e9+(i+1)*10.0e6)
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
