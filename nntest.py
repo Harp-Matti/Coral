@@ -14,7 +14,7 @@ device = SDR()
 
 #apply settings
 device.setSampleRate(10.0e6)
-device.setBandwidth(10.0e6)
+device.setBandwidth(8.0e6)
 device.setFrequency(1.0e9)
 
 # Specify the TensorFlow model, labels, and image
