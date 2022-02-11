@@ -4,10 +4,7 @@ import pathlib
 from pycoral.utils import dataset
 
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.utils import shuffle
-from sklearn.model_selection import GridSearchCV
 
 from sdr.sdr import SDR
 import numpy as np #use numpy for buffers
@@ -28,11 +25,9 @@ label_file = os.path.join(script_dir, 'classes.txt')
 labels = dataset.read_label_file(label_file)
 
 def runClassifier(model,labels,x):
-    common.set_input(interpreter, x)
-    interpreter.invoke()
-    classes = classify.get_classes(interpreter, top_k=1)
+    classes = model.predict(x)
     for c in classes:
-        print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
+        print(labels.get(c.id, c.id))
 
 eps = 1.0e-10        
         
