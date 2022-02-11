@@ -34,11 +34,9 @@ public:
 			fprintf( stderr, "Failed\n");
 			SoapySDR::Device::unmake(sdr);
 		}
-		sdr->activateStream(rx_stream, 0, 0, 0);
 	}
 	
 	~SDR() {
-		sdr->deactivateStream(rx_stream, 0, 0);
 		sdr->closeStream(rx_stream);
 		SoapySDR::Device::unmake(sdr);
 	}
@@ -47,7 +45,9 @@ public:
 		void *buffs[] = {buff};
 		int flags;
 		long long time_ns;
+		sdr->activateStream(rx_stream, 0, 0, 0);
 		int ret = sdr->readStream(rx_stream, buffs, 1024, flags, time_ns, 1e5);
+		sdr->deactivateStream(rx_stream, 0, 0);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
@@ -66,9 +66,7 @@ public:
 	}
 	
 	void setSampleRate(double rate){
-		//sdr->deactivateStream(rx_stream, 0, 0);
 		sdr->setSampleRate(SOAPY_SDR_RX, 0, rate);
-		//sdr->activateStream(rx_stream, 0, 0, 0);
 	}
 	
 	double getBandwidth(){
@@ -76,9 +74,7 @@ public:
 	}
 	
 	void setBandwidth(double bw){
-		//sdr->deactivateStream(rx_stream, 0, 0);
 		sdr->setBandwidth(SOAPY_SDR_RX, 0, bw);
-		//sdr->activateStream(rx_stream, 0, 0, 0);
 	}
 	
 	double getFrequency(){
@@ -87,9 +83,7 @@ public:
 	
 	void setFrequency(double freq){
 		if (freq >= ranges[0].minimum() && freq <= ranges[0].maximum()){
-			//sdr->deactivateStream(rx_stream, 0, 0);
 			sdr->setFrequency(SOAPY_SDR_RX, 0, freq);
-			//sdr->activateStream(rx_stream, 0, 0, 0);
 		} else {
 			fprintf(stderr, "Frequency out of bounds\n");
 		}
