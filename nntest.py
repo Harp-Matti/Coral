@@ -37,7 +37,6 @@ def runClassifier(interpreter,labels,x):
 eps = 1.0e-10        
         
 def normalize(x):
-    x.reshape((2,1024))
     x -= np.mean(x,1,keepdims=True)
     x /= np.sqrt(np.mean(np.sum(np.power(x,2))))+eps
     return x
