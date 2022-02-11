@@ -13,8 +13,9 @@ from timeit import default_timer as timer
 device = SDR()
 
 #apply settings
-device.setSampleRate(1e6)
-device.setFrequency(912.3e6)
+device.setSampleRate(10.0e6)
+device.setBandwidth(10.0e6)
+device.setFrequency(1.0e9)
 
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
@@ -39,12 +40,13 @@ def normalize(x):
     x /= np.sqrt(np.mean(np.sum(np.power(x,2))))
     return x
 
-N_classifications = 10
+N_classifications = 11
 start = timer()
 #receive some samples
 for i in range(N_classifications):
     device.receive()
     runClassifier(interpreter,labels,normalize(np.asarray(device.read()).reshape((2,1024))))
+    device.setFrequency(1.0e9+(i+1)*10.0e6)
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
