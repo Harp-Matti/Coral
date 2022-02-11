@@ -13,7 +13,7 @@ from timeit import default_timer as timer
 device = SDR()
 
 #apply settings
-device.setSampleRate(10.0e6)
+device.setSampleRate(3.2e6)
 device.setBandwidth(8.0e6)
 device.setFrequency(1.0e9)
 
