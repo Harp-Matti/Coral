@@ -70,7 +70,7 @@ public:
 	}
 	
 	double getBandwidth(){
-		return sdr->getSampleRate(SOAPY_SDR_RX, 0);
+		return sdr->getBandwidth(SOAPY_SDR_RX, 0);
 	}
 	
 	void setBandwidth(double bw){
