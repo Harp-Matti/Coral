@@ -27,7 +27,7 @@ labels = dataset.read_label_file(label_file)
 def runClassifier(model,labels,x):
     classes = model.predict(x)
     for c in classes:
-        print(labels.get(c.id, c.id))
+        print(labels.get(c, c))
 
 eps = 1.0e-10        
         
