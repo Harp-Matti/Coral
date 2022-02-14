@@ -21,7 +21,7 @@ device.setBandwidth(8.0e6)
 device.setFrequency(1.0e9)
 
 model = load('model_adaboost.joblib')
-label_file = os.path.join(script_dir, 'classes.txt')
+label_file = 'classes.txt'
 labels = dataset.read_label_file(label_file)
 
 def runClassifier(model,labels,x):
