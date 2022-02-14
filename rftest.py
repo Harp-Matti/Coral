@@ -41,12 +41,12 @@ def features(x):
     cs = np.conj(s)
     s2 = np.power(s,2)
     cs2 = np.conj(s2)
-    M20 = np.reduce_sum(s2)
-    M21 = np.reduce_sum(s*cs)
-    C40 = np.reduce_sum(np.power(s2,2))-3*M20*M20
-    C41 = np.reduce_sum(s2*s*cs)-3*M21*M20
-    C42 = np.reduce_sum(s2*cs2)-np.absolute(M20*M20)-2*M21*M21
-    C63 = np.reduce_sum(s2*s*cs2*cs)-9*C42*M21-6*C21*C21*C21
+    M20 = np.sum(s2)
+    M21 = np.sum(s*cs)
+    C40 = np.sum(np.power(s2,2))-3*M20*M20
+    C41 = np.sum(s2*s*cs)-3*M21*M20
+    C42 = np.sum(s2*cs2)-np.absolute(M20*M20)-2*M21*M21
+    C63 = np.sum(s2*s*cs2*cs)-9*C42*M21-6*C21*C21*C21
     return [np.absolute(C40)/np.absolute(C42),np.absolute(C41)/np.absolute(C42),np.power(np.absolute(C63),2)/np.power(np.absolute(C42)+eps,3)]
   
 N_classifications = 11
