@@ -34,9 +34,13 @@ public:
 			fprintf( stderr, "Failed\n");
 			SoapySDR::Device::unmake(sdr);
 		}
+		streamActive = false;
 	}
 	
 	~SDR() {
+		if (streamActive){
+			deactivateStream();	
+		}
 		sdr->closeStream(rx_stream);
 		SoapySDR::Device::unmake(sdr);
 	}
@@ -45,9 +49,10 @@ public:
 		void *buffs[] = {buff};
 		int flags;
 		long long time_ns;
-		sdr->activateStream(rx_stream, 0, 0, 0);
+		if (!streamActive) {
+			activateStream();
+		}
 		int ret = sdr->readStream(rx_stream, buffs, 1024, flags, time_ns, 1e5);
-		sdr->deactivateStream(rx_stream, 0, 0);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
@@ -59,6 +64,16 @@ public:
 			output.push_back(buff[i].imag());
 		}
 		return output;	
+	}
+	
+	void activateStream() {
+		sdr->activateStream(rx_stream, 0, 0, 0);
+		streamActive = true;
+	}
+	
+	void deactivateStream() {
+		sdr->deactivateStream(rx_stream, 0, 0);
+		streamActive = false;
 	}
 	
 	double getSampleRate(){
@@ -93,4 +108,5 @@ public:
 	SoapySDR::RangeList ranges;
 	SoapySDR::Stream *rx_stream;
 	std::complex<float> buff[1024];
+	bool streamActive;
 };
