@@ -71,7 +71,7 @@ def stft(x):
         NFFT = 256
         overlap = 192
         s = x[0,:]+1j*x[1,:]
-        S = np.zeros(((len(s)-NFFT)/(NFFT-overlap),NFFT))
+        S = np.zeros(ceil(((len(s)-NFFT)/(NFFT-overlap)),NFFT))
         for i in range(S.shape[0]):
                 si = i*(NFFT-overlap)
                 S[i,:] = s[si:si+NFFT]
