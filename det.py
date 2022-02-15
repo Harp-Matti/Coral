@@ -6,7 +6,7 @@ import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
 
-N_samples = 1024
+N_samples = 16384
 device = SDR(N_samples)
 
 #apply settings
@@ -19,10 +19,7 @@ freq = f0
 eps = 1.0e-10        
         
 def kurt(x):    
-    #s = x[0,:]+1j*x[1,:]
-    rng = np.random.default_rng()
-    r = rng.standard_normal((2,N_samples))
-    s = r[0,:]+1j*r[1,:]    
+    s = x[0,:]+1j*x[1,:] 
     s = s-np.mean(s)
     cs = np.conj(s)    
     v = np.absolute(np.mean(s*cs))    
