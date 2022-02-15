@@ -27,6 +27,7 @@ public:
 		
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
 		
+		N_samples = N;
 		std::complex<float> buff[N];
 		
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
@@ -53,14 +54,14 @@ public:
 		if (!streamActive) {
 			activateStream();
 		}
-		int ret = sdr->readStream(rx_stream, buffs, N, flags, time_ns, 1e5);
+		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
 	
 	std::vector<float> read() {
 		std::vector<float> output;
-    		for (int i=0; i<N; i++){
+    		for (int i=0; i<N_samples; i++){
 			output.push_back(buff[i].real());
 			output.push_back(buff[i].imag());
 		}
@@ -110,5 +111,5 @@ public:
 	SoapySDR::Stream *rx_stream;
 	std::complex<float> *buff;
 	bool streamActive;
-	int N;
+	int N_samples;
 };
