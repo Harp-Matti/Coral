@@ -36,8 +36,6 @@ for opt, arg in opts:
                 N_samples = int(arg)
 
 device = SDR(N_samples)
-
-print(str(device.getName()))
                 
 #apply settings
 device.setSampleRate(rate)
