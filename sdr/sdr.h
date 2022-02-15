@@ -21,7 +21,7 @@ public:
 		
 		SoapySDR::Kwargs args = results[0];
 		std::string s = SoapySDR::KwargsToString(args);
-		std::cout << (s.substr(0,s.find(','))).substr(s.find('=')+1,std::string::npos) << std::endl;
+		name = (s.substr(0,s.find(','))).substr(s.find('=')+1,std::string::npos);
 		sdr = SoapySDR::Device::make(args);
 		if( sdr == NULL ){
 			fprintf(stderr, "SoapySDR::Device::make failed\n");
@@ -71,6 +71,10 @@ public:
 		return output;	
 	}
 	
+	std::string getName() {
+		return name;	
+	}
+	
 	void activateStream() {
 		sdr->activateStream(rx_stream, 0, 0, 0);
 		streamActive = true;
@@ -113,6 +117,7 @@ public:
 	SoapySDR::RangeList ranges;
 	SoapySDR::Stream *rx_stream;
 	std::complex<float> *buff;
+	std::string name;
 	bool streamActive;
 	int N_samples;
 };
