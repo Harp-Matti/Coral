@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 clear
 swig -c++ -python -py3 sdr.i
 g++ -c -fPIC sdr_wrap.cxx -I/usr/include/python3.7m -lSoapySDR
