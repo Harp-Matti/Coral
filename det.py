@@ -7,13 +7,39 @@ import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
 
-N_samples = 4096
+import sys, getopt
+
+N_samples = 1024
+f0 = 1.0e9
+bw = 8.0e6
+rate = 6e6
+step = 10e6
+
+try:
+        opts, args = getopt.getopt(sys.argv[1:],"hf:s:r:b:n:")
+except getopt.GetoptError:
+        print 'det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples>'
+        sys.exit(2)
+for opt, arg in opts:
+        if opt == '-h':
+                print 'test.py -i <inputfile> -o <outputfile>'
+                sys.exit()
+        elif opt == "-f":
+                f0 = arg
+        elif opt == "-s":
+                step = arg
+        elif opt == "-b":
+                bw = arg
+        elif opt == "-r":
+                rate = arg
+        elif opt == "-n":
+                N_samples = arg
+
 device = SDR(N_samples)
 
 #apply settings
-f0 = 1.0e9
-device.setSampleRate(6e6)
-device.setBandwidth(8.0e6)
+device.setSampleRate(rate)
+device.setBandwidth(bw)
 device.setFrequency(f0)
 freq = f0
 
@@ -41,7 +67,7 @@ for i in range(N_classifications):
     if device.receive() < N_samples:
         print('Receive failed')
     print('Kurtosis ' + str(kurt(np.nan_to_num(np.asarray(device.read()).reshape((2,N_samples))))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')    
-    freq = f0+i*10.0e6    
+    freq = f0+i*step    
     device.setFrequency(freq)
     #my_sleep(0.1)    
 
