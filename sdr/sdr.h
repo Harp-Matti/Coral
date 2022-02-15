@@ -28,7 +28,8 @@ public:
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
 		
 		N_samples = N;
-		std::complex<float> buff[N];
+		std::complex<float> b[N];
+		buff = b;
 		
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
 		if(rx_stream == NULL)
