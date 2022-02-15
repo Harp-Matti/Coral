@@ -60,7 +60,7 @@ public:
 	
 	std::vector<float> read() {
 		std::vector<float> output;
-    		for (int i=0; i<10240; i++){
+    		for (int i=0; i<N; i++){
 			output.push_back(buff[i].real());
 			output.push_back(buff[i].imag());
 		}
