@@ -52,14 +52,14 @@ public:
 		if (!streamActive) {
 			activateStream();
 		}
-		int ret = sdr->readStream(rx_stream, buffs, 1024, flags, time_ns, 1e5);
+		int ret = sdr->readStream(rx_stream, buffs, 10240, flags, time_ns, 1e5);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
 	
 	std::vector<float> read() {
 		std::vector<float> output;
-    		for (int i=0; i<1024; i++){
+    		for (int i=0; i<10240; i++){
 			output.push_back(buff[i].real());
 			output.push_back(buff[i].imag());
 		}
