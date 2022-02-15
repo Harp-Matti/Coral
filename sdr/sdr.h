@@ -21,8 +21,8 @@ public:
 		
 		SoapySDR::Kwargs args = results[0];
 		std::string s = SoapySDR::KwargsToString(args);
-		const char *n = ((s.substr(0,s.find(','))).substr(s.find('=')+1,std::string::npos)).c_str();
-		name = n;
+		strcpy(name,((s.substr(0,s.find(','))).substr(s.find('=')+1,std::string::npos)).c_str());
+		
 		sdr = SoapySDR::Device::make(args);
 		if( sdr == NULL ){
 			fprintf(stderr, "SoapySDR::Device::make failed\n");
