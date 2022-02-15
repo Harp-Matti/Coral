@@ -27,7 +27,7 @@ public:
 		
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
 		
-		std::vector<float> buff[N];
+		std::complex<float> buff[N];
 		
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
 		if(rx_stream == NULL)
@@ -108,7 +108,7 @@ public:
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList ranges;
 	SoapySDR::Stream *rx_stream;
-	std::complex<float> buff;
+	std::complex<float> *buff;
 	bool streamActive;
 	int N;
 };
