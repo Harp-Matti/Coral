@@ -42,6 +42,7 @@ for i in range(N_classifications):
         print('Receive failed')
     print('Kurtosis ' + str(kurt(np.asarray(device.read()).reshape((2,N_samples)))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')    
     freq = f0+i*10.0e6    
-    device.setFrequency(freq)    
+    device.setFrequency(freq)
+    my_sleep(0.1)    
 
 device.deactivateStream()
