@@ -62,7 +62,7 @@ def kurt(x):
     #return (s22-2.0-np.power(s20,2))/(1.0+np.power(s20,2)/2)
     s = x[0,:]
     s -= np.mean(s)
-    return np.mean(np.power(s,4))/np.power(np.mean(np.power,2)),2)
+    return np.mean(np.power(s,4))/np.power(np.mean(np.power(s,2)),2)
 
 N_classifications = 11
 #receive some samples
