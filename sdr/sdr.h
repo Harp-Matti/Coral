@@ -20,8 +20,10 @@ public:
 		}
 		
 		SoapySDR::Kwargs args = results[0];
-		std::string s = SoapySDR::KwargsToString(args);
-		strcpy(name,((s.substr(0,s.find(','))).substr(s.find('=')+1,std::string::npos)).c_str());
+		std::string s = SoapySDR::KwargsToString(args), ss = (s.substr(0,s.find(','))).substr(s.find('=')+1,std::string::npos);
+		char n[ss.length()+1];
+		strcpy(n,ss.c_str());
+		name = n;
 		
 		sdr = SoapySDR::Device::make(args);
 		if( sdr == NULL ){
