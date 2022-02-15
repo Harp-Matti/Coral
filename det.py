@@ -33,3 +33,5 @@ for i in range(N_classifications):
     freq = 1.0e9+i*10.0e6    
     device.setFrequency(freq)    
     print('Kurtosis ' + str(kurt(np.asarray(device.read()).reshape((2,N_samples)))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')
+
+device.deactivateStream()
