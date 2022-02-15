@@ -117,7 +117,7 @@ public:
 	SoapySDR::RangeList ranges;
 	SoapySDR::Stream *rx_stream;
 	std::complex<float> *buff;
-	char *name;
+	const char *name;
 	bool streamActive;
 	int N_samples;
 };
