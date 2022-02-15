@@ -20,6 +20,7 @@ public:
 		}
 		
 		SoapySDR::Kwargs args = results[0];
+		printf(SoapySDR::KwargsToString(args));
 		sdr = SoapySDR::Device::make(args);
 		if( sdr == NULL ){
 			fprintf(stderr, "SoapySDR::Device::make failed\n");
