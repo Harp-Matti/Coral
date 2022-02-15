@@ -17,13 +17,13 @@ step = 10e6
 N_steps = 11
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:],"hf:s:r:b:n:ns:")
+        opts, args = getopt.getopt(sys.argv[1:],"hf:s:r:b:N:n:")
 except getopt.GetoptError:
-        print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples> -ns <n_steps>')
+        print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -N <n_samples> -n <n_steps>')
         sys.exit(2)
 for opt, arg in opts:
         if opt == '-h':
-                print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples> -ns <n_steps>')
+                print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -N <n_samples> -n <n_steps>')
                 sys.exit()
         elif opt == "-f":
                 f0 = float(arg)
@@ -33,9 +33,9 @@ for opt, arg in opts:
                 bw = float(arg)
         elif opt == "-r":
                 rate = float(arg)
-        elif opt == "-n":
+        elif opt == "-N":
                 N_samples = int(arg)
-        elif opt == "-ns":
+        elif opt == "-n":
                 N_steps = int(arg)        
 
 device = SDR(N_samples)
