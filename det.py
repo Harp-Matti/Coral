@@ -25,15 +25,15 @@ for opt, arg in opts:
                 print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples>')
                 sys.exit()
         elif opt == "-f":
-                f0 = arg
+                f0 = float(arg)
         elif opt == "-s":
-                step = arg
+                step = float(arg)
         elif opt == "-b":
-                bw = arg
+                bw = float(arg)
         elif opt == "-r":
-                rate = arg
+                rate = float(arg)
         elif opt == "-n":
-                N_samples = arg
+                N_samples = int(arg)
 
 device = SDR(N_samples)
 
