@@ -14,11 +14,12 @@ f0 = 1.0e9
 bw = 8.0e6
 rate = 6e6
 step = 10e6
+N_steps = 11
 
 try:
         opts, args = getopt.getopt(sys.argv[1:],"hf:s:r:b:n:")
 except getopt.GetoptError:
-        print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples>')
+        print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples> -ns <n_steps>')
         sys.exit(2)
 for opt, arg in opts:
         if opt == '-h':
@@ -34,6 +35,8 @@ for opt, arg in opts:
                 rate = float(arg)
         elif opt == "-n":
                 N_samples = int(arg)
+        elif opt == "-ns":
+                N_steps = int(arg)        
 
 device = SDR(N_samples)
                 
@@ -64,9 +67,8 @@ def kurt(x):
     s -= np.mean(s)
     return np.mean(np.power(s,4))/np.power(np.mean(np.power(s,2)),2)
 
-N_classifications = 11
 #receive some samples
-for i in range(N_classifications):
+for i in range(N_steps):
     start = timer()
     if device.receive() < N_samples:
         print('Receive failed')
