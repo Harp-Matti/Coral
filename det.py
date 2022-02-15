@@ -37,6 +37,8 @@ for opt, arg in opts:
 
 device = SDR(N_samples)
 
+print(device.getName())
+                
 #apply settings
 device.setSampleRate(rate)
 device.setBandwidth(bw)
