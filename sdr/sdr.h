@@ -107,6 +107,6 @@ public:
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList ranges;
 	SoapySDR::Stream *rx_stream;
-	std::complex<float> buff[1024];
+	std::complex<float> buff[10240];
 	bool streamActive;
 };
