@@ -74,8 +74,7 @@ def stft(x):
         S = np.zeros((int(np.floor((len(s)-NFFT)/(NFFT-overlap))),NFFT))
         for i in range(S.shape[0]):
                 si = i*(NFFT-overlap)
-                S[i,:] = s[si:si+NFFT]
-        S = np.fft.fft(S)
+                S[i,:] = np.absolute(np.fft.fft(s[si:si+NFFT]))
         m = np.median(S)
         for i in range(S.shape[0]):
                 st = ""
