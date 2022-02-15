@@ -13,7 +13,7 @@
 
 class SDR {
 public:
-	SDR() {
+	SDR(int N) {
 		SoapySDR::KwargsList results = SoapySDR::Device::enumerate();
 		if (results.size() == 0) {
 			fprintf(stderr, "No SDR found\n");
@@ -26,7 +26,8 @@ public:
 		}
 		
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
-		//setBufferSize(1024);
+		
+		std::vector<float> buff[N];
 		
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
 		if(rx_stream == NULL)
@@ -52,7 +53,7 @@ public:
 		if (!streamActive) {
 			activateStream();
 		}
-		int ret = sdr->readStream(rx_stream, buffs, 10240, flags, time_ns, 1e5);
+		int ret = sdr->readStream(rx_stream, buffs, N, flags, time_ns, 1e5);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
@@ -107,6 +108,7 @@ public:
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList ranges;
 	SoapySDR::Stream *rx_stream;
-	std::complex<float> buff[10240];
+	std::complex<float> buff;
 	bool streamActive;
+	int N;
 };
