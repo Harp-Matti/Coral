@@ -17,13 +17,13 @@ step = 10e6
 N_steps = 11
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:],"hf:s:r:b:n:")
+        opts, args = getopt.getopt(sys.argv[1:],"hf:s:r:b:n:ns:")
 except getopt.GetoptError:
         print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples> -ns <n_steps>')
         sys.exit(2)
 for opt, arg in opts:
         if opt == '-h':
-                print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples>')
+                print('det.py -f <frequency> -s <frequency_step> -b <bandwidth> -r <sample_rate> -n <n_samples> -ns <n_steps>')
                 sys.exit()
         elif opt == "-f":
                 f0 = float(arg)
