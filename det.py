@@ -53,13 +53,16 @@ def my_sleep(duration, get_now=time.perf_counter):
         now = get_now()        
         
 def kurt(x):    
-    s = x[0,:]+1j*x[1,:] 
-    s = s-np.mean(s)
-    cs = np.conj(s)    
-    v = np.absolute(np.mean(s*cs))    
-    s20 = np.absolute(np.mean(np.power(s,2))/(v+eps))
-    s22 = np.absolute(np.mean(np.power(s,2)*np.power(cs,2))/(np.power(v,2)+eps))    
-    return (s22-2.0-np.power(s20,2))/(1.0+np.power(s20,2)/2)
+    #s = x[0,:]+1j*x[1,:] 
+    #s = s-np.mean(s)
+    #cs = np.conj(s)    
+    #v = np.absolute(np.mean(s*cs))    
+    #s20 = np.absolute(np.mean(np.power(s,2))/(v+eps))
+    #s22 = np.absolute(np.mean(np.power(s,2)*np.power(cs,2))/(np.power(v,2)+eps))    
+    #return (s22-2.0-np.power(s20,2))/(1.0+np.power(s20,2)/2)
+    s = x[0,:]
+    s -= np.mean(s)
+    return np.mean(np.power(s,4))/np.power(np.mean(np.power,2)),2)
 
 N_classifications = 11
 #receive some samples
