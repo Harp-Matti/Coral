@@ -19,7 +19,7 @@ eps = 1.0e-10
 def kurt(x):
     s = x[0,:]+1j*x[1,:]
     s = s-np.mean(s)
-    return mean(np.power(s,4))/mean(np.power(s,2))
+    return np.mean(np.power(s,4))/np.mean(np.power(s,2))
 
 N_classifications = 11
 #receive some samples
