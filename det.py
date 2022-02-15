@@ -68,8 +68,8 @@ def kurt(x):
     return np.mean(np.power(s,4))/np.power(np.mean(np.power(s,2)),2)
 
 def stft(x):
-        NFFT = 256
-        overlap = 192
+        NFFT = 128
+        overlap = 96
         s = x[0,:]+1j*x[1,:]
         S = np.zeros((int(np.floor((len(s)-NFFT)/(NFFT-overlap))),NFFT))
         for i in range(S.shape[0]):
@@ -80,7 +80,11 @@ def stft(x):
         for i in range(S.shape[0]):
                 st = ""
                 for j in range(NFFT):
-                        if S[i,j] > m:
+                        if S[i,j] > 3*m/2:
+                                st += 'O'
+                        else if S[i,j] > m:
+                                st += 'o'
+                        else if S[i,j] > m/2:
                                 st += '.'
                         else:
                                 st += ' '
