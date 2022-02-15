@@ -67,8 +67,10 @@ def kurt(x):
 N_classifications = 11
 #receive some samples
 for i in range(N_classifications):
+    start = timer()
     if device.receive() < N_samples:
         print('Receive failed')
+    my_sleep(N_samples/rate-(timer()-start))
     print('Kurtosis ' + str(kurt(np.nan_to_num(np.asarray(device.read()).reshape((2,N_samples))))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')    
     freq += step    
     device.setFrequency(freq)
