@@ -82,9 +82,9 @@ def stft(x):
                 for j in range(NFFT):
                         if S[i,j] > 3*m/2:
                                 st += 'O'
-                        else if S[i,j] > m:
+                        elif S[i,j] > m:
                                 st += 'o'
-                        else if S[i,j] > m/2:
+                        elif S[i,j] > m/2:
                                 st += '.'
                         else:
                                 st += ' '
