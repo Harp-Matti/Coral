@@ -13,7 +13,8 @@ from timeit import default_timer as timer
 
 from joblib import load
 
-device = SDR()
+N_samples = 1024
+device = SDR(N_samples)
 
 #apply settings
 device.setSampleRate(10.0e6)
@@ -53,10 +54,10 @@ N_classifications = 11
 start = timer()
 #receive some samples
 for i in range(N_classifications):
-    if device.receive() < 1024:
+    if device.receive() < N_samples:
         print('Receive failed')
     #device.setFrequency(1.0e9+(i+1)*10.0e6)    
-    runClassifier(model,labels,features(normalize(np.asarray(device.read()).reshape((2,1024)))).reshape(1,-1))
+    runClassifier(model,labels,features(normalize(np.asarray(device.read()).reshape((2,N_samples)))).reshape(1,-1))
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
