@@ -12,7 +12,7 @@ device = SDR(N_samples)
 
 #apply settings
 f0 = 1.0e9
-device.setSampleRate(10e6)
+device.setSampleRate(6e6)
 device.setBandwidth(8.0e6)
 device.setFrequency(f0)
 freq = f0
