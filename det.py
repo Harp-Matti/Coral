@@ -67,6 +67,26 @@ def kurt(x):
     s -= np.mean(s)
     return np.mean(np.power(s,4))/np.power(np.mean(np.power(s,2)),2)
 
+def stft(x):
+        NFFT = 256
+        overlap = 192
+        s = x[0,:]+1j*x[1,:]
+        S = np.zeros(((len(s)-NFFT)/(NFFT-overlap),NFFT))
+        for i in range(S.shape[0]):
+                si = i*(NFFT-overlap)
+                S[i,:] = s[si:si+NFFT]
+        S = np.fft(S)
+        m = np.median(S)
+        for i in range(S.shape[0]):
+                st = ""
+                for j in range(NFFT):
+                        if S[i,j] > m:
+                                st += '.'
+                        else:
+                                st += ' '
+                print(st)                
+        
+
 #receive some samples
 for i in range(N_steps):
     start = timer()
@@ -74,6 +94,7 @@ for i in range(N_steps):
         print('Receive failed')
     my_sleep(N_samples/rate-(timer()-start))
     print('Kurtosis ' + str(kurt(np.nan_to_num(np.asarray(device.read()).reshape((2,N_samples))))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')    
+    stft(np.nan_to_num(np.asarray(device.read()).reshape((2,N_samples))))
     freq += step    
     device.setFrequency(freq)
     #my_sleep(0.1)    
