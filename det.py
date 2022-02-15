@@ -28,4 +28,4 @@ for i in range(N_classifications):
         print('Receive failed')
     freq = 1.0e9+(i+1)*10.0e6    
     device.setFrequency(freq)    
-    print('Kurtosis ' + str(kurt(np.asarray(device.read()).reshape((2,N_samples)))) ' at frequency ' + str(freq))
+    print('Kurtosis ' + str(kurt(np.asarray(device.read()).reshape((2,N_samples)))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')
