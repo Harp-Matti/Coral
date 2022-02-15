@@ -1,4 +1,5 @@
 import os
+import time
 import pathlib
 
 from sdr.sdr import SDR
@@ -6,7 +7,7 @@ import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
 
-N_samples = 16384
+N_samples = 8196
 device = SDR(N_samples)
 
 #apply settings
@@ -17,6 +18,13 @@ device.setFrequency(f0)
 freq = f0
 
 eps = 1.0e-10        
+        
+def my_sleep(duration, get_now=time.perf_counter):
+    # More precise version of time.sleep()
+    now = get_now()
+    end = now + duration
+    while now < end:
+        now = get_now()        
         
 def kurt(x):    
     s = x[0,:]+1j*x[1,:] 
