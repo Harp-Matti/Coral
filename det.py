@@ -10,20 +10,20 @@ N_samples = 1024
 device = SDR(N_samples)
 
 #apply settings
-device.setSampleRate(3.2e6)
+device.setSampleRate(10e6)
 device.setBandwidth(8.0e6)
 device.setFrequency(1.0e9)
 
-eps = 0.0e-10        
+eps = 1.0e-10        
         
 def kurt(x):
     s = x[0,:]+1j*x[1,:]
     s = s-np.mean(s)
     cs = np.conj(s)    
-    v = np.mean(s*cs)    
+    v = np.absolute(np.mean(s*cs))    
     s20 = np.absolute(np.mean(np.power(s,2))/(v+eps))
     s22 = np.absolute(np.mean(np.power(s,2)*np.power(cs,2))/(np.power(v,2)+eps))    
-    return (s22-2-np.power(s20,2))/(1+np.power(s20,2)/2)
+    return (s22-2.0-np.power(s20,2))/(1.0+np.power(s20,2)/2)
 
 N_classifications = 11
 #receive some samples
