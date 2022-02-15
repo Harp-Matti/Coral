@@ -7,7 +7,7 @@ import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
 
-N_samples = 8196
+N_samples = 4096
 device = SDR(N_samples)
 
 #apply settings
@@ -43,6 +43,6 @@ for i in range(N_classifications):
     print('Kurtosis ' + str(kurt(np.nan_to_num(np.asarray(device.read()).reshape((2,N_samples))))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')    
     freq = f0+i*10.0e6    
     device.setFrequency(freq)
-    my_sleep(0.1)    
+    #my_sleep(0.1)    
 
 device.deactivateStream()
