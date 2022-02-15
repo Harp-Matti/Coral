@@ -75,7 +75,7 @@ def stft(x):
         for i in range(S.shape[0]):
                 si = i*(NFFT-overlap)
                 S[i,:] = s[si:si+NFFT]
-        S = np.fft(S)
+        S = np.fft.fft(S)
         m = np.median(S)
         for i in range(S.shape[0]):
                 st = ""
