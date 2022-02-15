@@ -14,7 +14,7 @@ device.setSampleRate(3.2e6)
 device.setBandwidth(8.0e6)
 device.setFrequency(1.0e9)
 
-eps = 1.0e-10        
+eps = 0.0e-10        
         
 def kurt(x):
     s = x[0,:]+1j*x[1,:]
