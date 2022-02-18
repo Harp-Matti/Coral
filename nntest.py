@@ -20,7 +20,8 @@ device.setFrequency(1.0e9)
 
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'model_augmod_quant_edgetpu.tflite')
+#model_file = os.path.join(script_dir, 'model_augmod_quant_edgetpu.tflite')
+model_file = os.path.join(script_dir, 'model_augmod_untrained_quant_edgetpu.tflite')
 label_file = os.path.join(script_dir, 'classes.txt')
 labels = dataset.read_label_file(label_file)
 
