@@ -95,7 +95,7 @@ for i in range(N_steps):
     start = timer()
     if device.receive() < N_samples:
         print('Receive failed')
-    my_sleep(N_samples/rate-(timer()-start))
+    #my_sleep(N_samples/rate-(timer()-start))
     print('Kurtosis ' + str(kurt(np.nan_to_num(np.asarray(device.read()).reshape((2,N_samples))))) + ' at frequency ' + str(round(freq/1e6)) + ' MHz')    
     #stft(np.nan_to_num(np.asarray(device.read()).reshape((2,N_samples))))
     freq += step    
