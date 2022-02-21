@@ -46,6 +46,9 @@ device.setBandwidth(bw)
 device.setFrequency(f0)
 freq = f0
 
+print('Sample rate is ' + str(device.getSampleRate()))
+print('Filter bandwidth is ' + str(device.getBandwidth()) + ' Hz')
+
 eps = 1.0e-10        
         
 def my_sleep(duration, get_now=time.perf_counter):
