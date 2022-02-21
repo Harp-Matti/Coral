@@ -46,8 +46,8 @@ device.setBandwidth(bw)
 device.setFrequency(f0)
 freq = f0
 
-print('Sample rate is ' + str(device.getSampleRate()))
-print('Filter bandwidth is ' + str(device.getBandwidth()) + ' Hz')
+print('Sample rate is ' + str(device.getSampleRate()/1e3) + ' ksps')
+print('Filter bandwidth is ' + str(device.getBandwidth()/1e3) + ' kHz')
 
 eps = 1.0e-10        
         
