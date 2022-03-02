@@ -116,8 +116,8 @@ public:
 	}
 	
 	void listRates(){
-		for (int i=0;i<ranges[0].length();i++){
-			std::cout << ranges[0][i] << sdt::endl;
+		for (int i=0;i<ranges.length();i++){
+			std::cout << ranges[i].minimum() << ' ' << ranges[i].maximum() << sdt::endl;
 		}
 	}
 	
