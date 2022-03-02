@@ -108,7 +108,7 @@ public:
 	}
 	
 	void setFrequency(double freq){
-		if (freq >= ranges[0].minimum() && freq <= ranges[0].maximum()){
+		if (freq >= ranges.front().minimum() && freq <= ranges.back().maximum()){
 			sdr->setFrequency(SOAPY_SDR_RX, 0, freq);
 		} else {
 			fprintf(stderr, "Frequency out of bounds\n");
