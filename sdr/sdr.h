@@ -29,6 +29,7 @@ public:
 		}
 		
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
+		rates = sdr->getSampleRateRange( SOAPY_SDR_RX, 0);
 		
 		N_samples = N;
 		std::complex<float> b[N];
@@ -114,8 +115,15 @@ public:
 		}
 	}
 	
+	void listRates(){
+		for (int i=0;i<ranges[0].length();i++){
+			std::cout << ranges[0][i] << sdt::endl;
+		}
+	}
+	
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList ranges;
+	SoapySDR::RangeList rates;
 	SoapySDR::Stream *rx_stream;
 	std::complex<float> *buff;
 	std::string name;
