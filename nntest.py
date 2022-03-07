@@ -10,7 +10,7 @@ import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
 
-N_samples = 1024
+N_samples = 2*1024
 device = SDR(N_samples)
 
 #apply settings
@@ -21,8 +21,8 @@ device.setFrequency(1.0e9)
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
 #model_file = os.path.join(script_dir, 'model_augmod_quant_edgetpu.tflite')
-model_file = os.path.join(script_dir, 'model_augmod_untrained_quant_edgetpu.tflite')
-label_file = os.path.join(script_dir, 'classes.txt')
+model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
+label_file = os.path.join(script_dir, 'classes_hfradio.txt')
 labels = dataset.read_label_file(label_file)
 
 # Initialize the TF interpreter
@@ -51,7 +51,7 @@ for i in range(N_classifications):
         print('Receive failed')
     #device.setFrequency(1.0e9+(i+1)*10.0e6)    
     #device.read()
-    runClassifier(interpreter,labels,normalize(np.asarray(device.read()).reshape((2,N_samples))).reshape(2,N_samples,1))
+    runClassifier(interpreter,labels,normalize(np.asarray(device.read()).reshape((2,N_samples))).reshape(1,2,N_samples,1))
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
