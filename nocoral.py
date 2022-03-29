@@ -11,17 +11,18 @@ N_samples = 2*1024
 device = SDR(N_samples)
 
 #apply settings
-device.setSampleRate(3.2e6)
+#device.setSampleRate(3.2e6)
 print('sample rate set')
-device.setBandwidth(8.0e6)
+#device.setBandwidth(8.0e6)
 print('bandwidth set')
-device.setFrequency(1.0e9)
+#device.setFrequency(1.0e9)
 print('frequency set')
 
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant.tflite')
 label_file = os.path.join(script_dir, 'classes_hfradio.txt')
+print('paths defined')
 
 # Initialize the TF interpreter
 interpreter = tflite.Interpreter(model_path=model_file)
