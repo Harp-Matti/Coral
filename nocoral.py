@@ -58,6 +58,7 @@ N_classifications = 11
 start = timer()
 #receive some samples
 for i in range(N_classifications):
+    print('try to receive')
     if device.receive() < N_samples:
         print('Receive failed')
     print('receive success')
