@@ -26,16 +26,18 @@ label_file = os.path.join(script_dir, 'classes_hfradio.txt')
 # Initialize the TF interpreter
 interpreter = tflite.Interpreter(model_path=model_file)
 interpreter.allocate_tensors()
+print('interpreter initialized')
 
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 labels = load_labels(label_file)
+print('details and labels read')
 
 # check the type of the input tensor
 floating_model = input_details[0]['dtype'] == np.float32
-
 height = input_details[0]['shape'][1]
 width = input_details[0]['shape'][2]
+print('dims read')
 
 def runClassifier(interpreter,labels,x):
     interpreter.set_tensor(input_details[0]['index'], x)
