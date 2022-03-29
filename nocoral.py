@@ -26,6 +26,7 @@ print('paths defined')
 
 # Initialize the TF interpreter
 interpreter = tflite.Interpreter(model_path=model_file)
+print('interpreter loaded')
 interpreter.allocate_tensors()
 print('interpreter initialized')
 
