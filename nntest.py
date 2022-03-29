@@ -1,10 +1,10 @@
 import os
 import pathlib
-#from pycoral.utils import edgetpu
+from pycoral.utils import edgetpu
 from pycoral.utils import dataset
-#from pycoral.adapters import common
-#from pycoral.adapters import classify
-import tflite_runtime.interpreter as tflite
+from pycoral.adapters import common
+from pycoral.adapters import classify
+#import tflite_runtime.interpreter as tflite
 
 from sdr.sdr import SDR
 import numpy as np #use numpy for buffers
@@ -22,14 +22,12 @@ device.setFrequency(1.0e9)
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
 #model_file = os.path.join(script_dir, 'model_augmod_quant_edgetpu.tflite')
-#model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
-model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant.tflite')
+model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
 label_file = os.path.join(script_dir, 'classes_hfradio.txt')
 labels = dataset.read_label_file(label_file)
 
 # Initialize the TF interpreter
-#interpreter = edgetpu.make_interpreter(model_file)
-interpreter = tflite.Interpreter(model_path=model_file)
+interpreter = edgetpu.make_interpreter(model_file)
 interpreter.allocate_tensors()
 
 def runClassifier(interpreter,labels,x):
