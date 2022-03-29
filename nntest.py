@@ -1,7 +1,7 @@
 import os
 import pathlib
 #from pycoral.utils import edgetpu
-#from pycoral.utils import dataset
+from pycoral.utils import dataset
 #from pycoral.adapters import common
 #from pycoral.adapters import classify
 import tflite_runtime.interpreter as tflite
