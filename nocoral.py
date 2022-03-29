@@ -12,8 +12,11 @@ device = SDR(N_samples)
 
 #apply settings
 device.setSampleRate(3.2e6)
+print('sample rate set')
 device.setBandwidth(8.0e6)
+print('bandwidth set')
 device.setFrequency(1.0e9)
+print('frequency set')
 
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
