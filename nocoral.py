@@ -27,7 +27,7 @@ interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 #labels = load_labels(label_file)
-labels = np.zeros((18,1)))
+labels = np.zeros((18,1))
 
 # check the type of the input tensor
 floating_model = input_details[0]['dtype'] == np.float32
