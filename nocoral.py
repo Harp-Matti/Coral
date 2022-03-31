@@ -59,7 +59,7 @@ for i in range(N_classifications):
         print('Receive failed')
     #device.setFrequency(1.0e9+(i+1)*10.0e6)    
     #device.read()
-    runClassifier(interpreter,normalize(np.asarray(device.read(), dtype=np.int8).reshape((2,N_samples))).reshape(1,2,N_samples,1))
+    runClassifier(interpreter,normalize(np.asarray(device.read()).reshape((2,N_samples))).reshape(1,2,N_samples,1).astype(np.int8))
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
