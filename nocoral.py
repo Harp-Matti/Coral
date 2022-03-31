@@ -11,37 +11,30 @@ N_samples = 2*1024
 device = SDR(N_samples)
 
 #apply settings
-#device.setSampleRate(3.2e6)
-print('sample rate set')
-#device.setBandwidth(8.0e6)
-print('bandwidth set')
-#device.setFrequency(1.0e9)
-print('frequency set')
+device.setSampleRate(3.2e6)
+device.setBandwidth(8.0e6)
+device.setFrequency(1.0e9)
 
 # Specify the TensorFlow model, labels, and image
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant.tflite')
 label_file = os.path.join(script_dir, 'classes_hfradio.txt')
-print('paths defined')
 
 # Initialize the TF interpreter
 interpreter = tflite.Interpreter(model_path=model_file)
-print('interpreter loaded')
 interpreter.allocate_tensors()
-print('interpreter initialized')
 
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
-labels = load_labels(label_file)
-print('details and labels read')
+#labels = load_labels(label_file)
+labels = np.zeros((18,1)))
 
 # check the type of the input tensor
 floating_model = input_details[0]['dtype'] == np.float32
 height = input_details[0]['shape'][1]
 width = input_details[0]['shape'][2]
-print('dims read')
 
-def runClassifier(interpreter,labels,x):
+def runClassifier(interpreter,x):
     interpreter.set_tensor(input_details[0]['index'], x)
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
@@ -68,7 +61,7 @@ for i in range(N_classifications):
     print('receive success')
     #device.setFrequency(1.0e9+(i+1)*10.0e6)    
     #device.read()
-    runClassifier(interpreter,labels,normalize(np.asarray(device.read()).reshape((2,N_samples))).reshape(1,2,N_samples,1))
+    runClassifier(interpreter,normalize(np.asarray(device.read()).reshape((2,N_samples))).reshape(1,2,N_samples,1))
 
 end = timer()
 print(f'Average inference time over {N_classifications} samples: {(end-start)/N_classifications} seconds')
