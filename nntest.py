@@ -6,10 +6,22 @@ from pycoral.adapters import common
 from pycoral.adapters import classify
 #import tflite_runtime.interpreter as tflite
 
+import socket
+import sys
+from time import sleep
+import random
+from struct import pack
+
 from sdr.sdr import SDR
 import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
+
+# Create a UDP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+host, port = '192.168.3.113', 65000
+server_address = (host, port)
 
 N_samples = 2*1024
 device = SDR(N_samples)
@@ -36,6 +48,10 @@ def runClassifier(interpreter,labels,x):
     classes = classify.get_classes(interpreter, top_k=1)
     for c in classes:
         print('%s: %.5f' % (labels.get(c.id, c.id), c.score))
+        
+        # Pack three 32-bit floats into message and send
+        message = pack('3f', x, y, z)
+        sock.sendto(message, server_address)
 
 eps = 1.0e-10        
         
