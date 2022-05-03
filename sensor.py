@@ -17,8 +17,7 @@ import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
 
-from message import Failure, Success, Run, Result, Get, Set
-from comms import Comms
+from comms.comms import Comms, Failure, Success, Run, Result, Get, Set
 
 class Sensor:
   def __init__(Comms):
