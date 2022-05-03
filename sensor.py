@@ -79,7 +79,8 @@ class Sensor:
         self.run()
                
 def main():
-  comms = Comms('192.168.3.112', 65000)
+  #comms = Comms('192.168.3.112', 65000)
+  comms = Comms('192.168.3.112', 9990)
   sensor = Sensor(comms)
   sensor.wait()
 
