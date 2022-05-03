@@ -73,20 +73,20 @@ class Comms:
         if isinstance(message,Message):
             message_type = type(message)
             if message_type == Failure:
-                self.sock.sendto(pack('i'),0)
+                self.sock.sendto(pack('i',0), self.server_address)
             elif message_type == Success:
-                self.sock.sendto(pack('i'),1)
+                self.sock.sendto(pack('i',1), self.server_address)
             elif message_type == Run:
-                self.sock.sendto(pack('i'),2)
+                self.sock.sendto(pack('i',2), self.server_address)
             elif message_type == Result:
                 N = len(message.spectrum_result)
-                self.sock.sendto(pack('ii%sf') % N, 3, message.class_result, *message.spectrum_result)
+                self.sock.sendto(pack('ii%sf' % N, 3, message.class_result, *message.spectrum_result), self.server_address)
             elif message_type == Get:
-                self.sock.sendto(pack('ii'), 4, message.parameter)
+                self.sock.sendto(pack('ii', 4, message.parameter), self.server_address)
             elif message_type == Set:
-                self.sock.sendto(pack('iid'), 5, message.parameter, message.value)
+                self.sock.sendto(pack('iid', 5, message.parameter, message.value), self.server_address)
             elif message_type == Return:
-                self.sock.sendto(pack('iid'), 5, message.parameter, message.value)
+                self.sock.sendto(pack('iid', 6, message.parameter, message.value), self.server_address)
             else:
                 error('Send error: Unknown message type')
         else:
