@@ -20,7 +20,9 @@ from timeit import default_timer as timer
 from comms.comms import Comms, Failure, Success, Run, Result, Get, Set
 
 class Sensor:
-  def __init__(Comms):
+  def __init__(self, comms):
+    self.comms = comms
+    
     self.N_samples = 2*1024
     self.device = SDR(N_samples)
 
