@@ -61,7 +61,7 @@ class Server(Comms):
             return Run()
         elif message_type == 3:
             class_result = unpack_from('i',message,4)[0]
-            spectrum_result = list(unpack_from((len(message)-8)*'f',message,8))
+            spectrum_result = list(unpack_from(int((len(message)-8)/4)*'f',message,8))
             return Result(class_result, spectrum_result)
         elif message_type == 4:
             return Get(unpack_from('i',message,4)[0])
@@ -118,7 +118,7 @@ class Client(Comms):
             return Run()
         elif message_type == 3:
             class_result = unpack_from('i',message,4)[0]
-            spectrum_result = list(unpack_from((len(message)-8)*'f',message,8))
+            spectrum_result = list(unpack_from(int((len(message)-8)/4)*'f',message,8))
             return Result(class_result, spectrum_result)
         elif message_type == 4:
             return Get(unpack_from('i',message,4)[0])
