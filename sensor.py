@@ -80,7 +80,7 @@ class Sensor:
                
 def main():
   #comms = Comms('192.168.3.112', 65000)
-  comms = Client('192.168.3.112', 9990)
+  comms = Client('192.168.3.112', 65000)
   sensor = Sensor(comms)
   sensor.wait()
 
