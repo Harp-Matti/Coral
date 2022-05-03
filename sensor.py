@@ -72,7 +72,7 @@ class Sensor:
         self.comms.send(Result(class_result,pwelch(x,128)))
         
   def wait(self):
-    while true:
+    while True:
       message = self.comms.receive()
       message_type = type(message)
       if message_type == Run:
