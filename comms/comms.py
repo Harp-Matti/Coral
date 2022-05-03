@@ -60,16 +60,16 @@ class Server(Comms):
         elif message_type == 2:
             return Run()
         elif message_type == 3:
-            class_result = unpack_from('i',4,message)[0]
-            spectrum_result = list(unpack_from((len(message)-8)*'f',8,message))
+            class_result = unpack_from('i',message,4)[0]
+            spectrum_result = list(unpack_from((len(message)-8)*'f',message,8))
             return Result(class_result, spectrum_result)
         elif message_type == 4:
-            return Get(unpack_from('i',4,message)[0])
+            return Get(unpack_from('i',message,4)[0])
         elif message_type == 5:
-            parameter, value = unpack_from('id',4,message)
+            parameter, value = unpack_from('id',message,4)
             return Set(parameter, value)
         elif message_type == 6:
-            parameter, value = unpack_from('id',4,message)
+            parameter, value = unpack_from('id',message,4)
             return Return(parameter, value)
         else:
             error('Receive error: Unknown message type')
@@ -117,16 +117,16 @@ class Client(Comms):
         elif message_type == 2:
             return Run()
         elif message_type == 3:
-            class_result = unpack_from('i',4,message)[0]
-            spectrum_result = list(unpack_from((len(message)-8)*'f',8,message))
+            class_result = unpack_from('i',message,4)[0]
+            spectrum_result = list(unpack_from((len(message)-8)*'f',message,8))
             return Result(class_result, spectrum_result)
         elif message_type == 4:
-            return Get(unpack_from('i',4,message)[0])
+            return Get(unpack_from('i',message,4)[0])
         elif message_type == 5:
-            parameter, value = unpack_from('id',4,message)
+            parameter, value = unpack_from('id',message,4)
             return Set(parameter, value)
         elif message_type == 6:
-            parameter, value = unpack_from('id',4,message)
+            parameter, value = unpack_from('id',message,4)
             return Return(parameter, value)
         else:
             error('Receive error: Unknown message type')
