@@ -24,7 +24,7 @@ class Sensor:
     self.comms = comms
     
     self.N_samples = 2*1024
-    self.device = SDR(N_samples)
+    self.device = SDR(self.N_samples)
 
     self.eps = 1.0e-10
     
@@ -61,11 +61,11 @@ class Sensor:
     return psd.tolist()
   
   def run(self):
-      if self.device.receive() < N_samples:
+      if self.device.receive() < self.N_samples:
         print('Receive failed')
         self.comms.send(Failure())
       else:
-        x = normalize(np.asarray(self.device.read()).reshape((2,N_samples))).reshape(1,2,N_samples,1)
+        x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
         common.set_input(self.interpreter, x)
         self.interpreter.invoke()
         class_result = classify.get_classes(self.interpreter, top_k=1)
