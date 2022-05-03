@@ -38,14 +38,13 @@ class Comms:
     pass
 
 class Server(Comms):
-    def __init__(self,host,port):   
+    def __init__(self,port):   
         # Create a UDP socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Bind the socket to the port
-        self.server_address = (host, port)
-        print(f'Starting UDP server on {host} port {port}')
-        self.server_socket.bind(self.server_address)
+        print(f'Starting UDP server on port {port}')
+        self.server_socket.bind(('',port))
         self.server_socket.listen(5)
         self.sock, client_address = self.server_socket.accept()
         #self.sock.connect(self.server_address)
