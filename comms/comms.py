@@ -51,7 +51,7 @@ class Server(Comms):
         
     def receive(self):
         # Wait for message
-        message, address = self.sock.recv(4096)
+        message = self.sock.recv(4096)
         message_type = unpack_from('i', message)[0]
         if message_type == 0: 
             return Failure()
@@ -108,7 +108,7 @@ class Client(Comms):
         
     def receive(self):
         # Wait for message
-        message, address = self.sock.recv(4096)
+        message = self.sock.recv(4096)
         message_type = unpack_from('i', message)[0]
         if message_type == 0: 
             return Failure()
