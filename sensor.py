@@ -72,12 +72,12 @@ class Sensor:
             print(class_result)
             self.comms.send(Result(int(class_result),pwelch(x,128)))
         
-def wait(self):
-    while True:
-        message = self.comms.receive()
-        message_type = type(message)
-        if message_type == Run:
-            self.run()
+    def wait(self):
+        while True:
+            message = self.comms.receive()
+            message_type = type(message)
+            if message_type == Run:
+                self.run()
                
 def main():
     comms = Client('192.168.3.113', 65000)
