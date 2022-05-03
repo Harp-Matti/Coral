@@ -37,52 +37,53 @@ def pwelch(x,n):
     return psd.tolist()
 
 class Sensor:
-  def __init__(self, comms):
-    self.comms = comms
-    
-    self.N_samples = 2*1024
-    self.device = SDR(self.N_samples)
-    
-    #apply settings
-    self.device.setSampleRate(3.2e6)
-    self.device.setBandwidth(8.0e6)
-    self.device.setFrequency(1.0e9)
-
-    # Specify the TensorFlow model, labels, and image
-    script_dir = pathlib.Path(__file__).parent.absolute()
-    #model_file = os.path.join(script_dir, 'model_augmod_quant_edgetpu.tflite')
-    model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
-    
-    #self.label_file = os.path.join(script_dir, 'classes_hfradio.txt')
-    #labels = dataset.read_label_file(label_file)
-
-    # Initialize the TF interpreter
-    self.interpreter = edgetpu.make_interpreter(model_file)
-    self.interpreter.allocate_tensors()
-  
-  def run(self):
-      if self.device.receive() < self.N_samples:
-        print('Receive failed')
-        self.comms.send(Failure())
-      else:
-        x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
-        common.set_input(self.interpreter, x)
-        self.interpreter.invoke()
-        class_result = classify.get_classes(self.interpreter, top_k=1)
-        self.comms.send(Result(class_result,pwelch(x,128)))
+    def __init__(self, comms):
+        self.comms = comms
         
-  def wait(self):
+        self.N_samples = 2*1024
+        self.device = SDR(self.N_samples)
+        
+        #apply settings
+        self.device.setSampleRate(3.2e6)
+        self.device.setBandwidth(8.0e6)
+        self.device.setFrequency(1.0e9)
+
+        # Specify the TensorFlow model, labels, and image
+        script_dir = pathlib.Path(__file__).parent.absolute()
+        #model_file = os.path.join(script_dir, 'model_augmod_quant_edgetpu.tflite')
+        model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
+        
+        #self.label_file = os.path.join(script_dir, 'classes_hfradio.txt')
+        #labels = dataset.read_label_file(label_file)
+
+        # Initialize the TF interpreter
+        self.interpreter = edgetpu.make_interpreter(model_file)
+        self.interpreter.allocate_tensors()
+  
+    def run(self):
+        if self.device.receive() < self.N_samples:
+            print('Receive failed')
+            self.comms.send(Failure())
+        else:
+            x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
+            common.set_input(self.interpreter, x)
+            self.interpreter.invoke()
+            class_result = classify.get_classes(self.interpreter, top_k=1)
+            print(class_result)
+            self.comms.send(Result(int(class_result),pwelch(x,128)))
+        
+def wait(self):
     while True:
-      message = self.comms.receive()
-      message_type = type(message)
-      if message_type == Run:
+        message = self.comms.receive()
+        message_type = type(message)
+        if message_type == Run:
         self.run()
                
 def main():
-  comms = Client('192.168.3.113', 65000)
-  #comms = Client('127.0.0.1', 65000)
-  sensor = Sensor(comms)
-  sensor.wait()
+    comms = Client('192.168.3.113', 65000)
+    #comms = Client('127.0.0.1', 65000)
+    sensor = Sensor(comms)
+    sensor.wait()
 
 if __name__ == "__main__":
-  main() 
+    main() 
