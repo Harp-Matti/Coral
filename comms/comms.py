@@ -41,8 +41,9 @@ class Comms:
 
         # Bind the socket to the port
         self.server_address = (host, port)
-        print(f'Starting UDP server on {host} port {port}')
-        self.sock.bind(self.server_address)
+        #print(f'Starting UDP server on {host} port {port}')
+        #self.sock.bind(self.server_address)
+        self.sock.connect(server_address)
         
     def receive(self):
         # Wait for message
@@ -73,20 +74,20 @@ class Comms:
         if isinstance(message,Message):
             message_type = type(message)
             if message_type == Failure:
-                self.sock.sendto(pack('i',0), self.server_address)
+                self.sock.send(pack('i',0))
             elif message_type == Success:
-                self.sock.sendto(pack('i',1), self.server_address)
+                self.sock.send(pack('i',1))
             elif message_type == Run:
-                self.sock.sendto(pack('i',2), self.server_address)
+                self.sock.send(pack('i',2))
             elif message_type == Result:
                 N = len(message.spectrum_result)
-                self.sock.sendto(pack('ii%sf' % N, 3, message.class_result, *message.spectrum_result), self.server_address)
+                self.sock.send(pack('ii%sf' % N, 3, message.class_result, *message.spectrum_result))
             elif message_type == Get:
-                self.sock.sendto(pack('ii', 4, message.parameter), self.server_address)
+                self.sock.send(pack('ii', 4, message.parameter))
             elif message_type == Set:
-                self.sock.sendto(pack('iid', 5, message.parameter, message.value), self.server_address)
+                self.sock.send(pack('iid', 5, message.parameter, message.value))
             elif message_type == Return:
-                self.sock.sendto(pack('iid', 6, message.parameter, message.value), self.server_address)
+                self.sock.send(pack('iid', 6, message.parameter, message.value))
             else:
                 error('Send error: Unknown message type')
         else:
