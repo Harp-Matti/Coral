@@ -31,7 +31,7 @@ def pwelch(x,n):
     w = np.hanning(n)
     N = int(np.floor((x.size/2-n)/(n/2))+1)
     for i in range(N):
-        psd = psd + abs(np.fft.fft((x[0,1,int(i*n/2):int(i*n/2+n),1] + 1j*x[0,1,int(i*n/2):int(i*n/2+n),1])* w))**2/N
+        psd = psd + abs(np.fft.fft((x[0,0,int(i*n/2):int(i*n/2+n),0] + 1j*x[0,1,int(i*n/2):int(i*n/2+n),0])* w))**2/N
     #ma = np.amax(psd)
     #psd = psd/ma
     return psd.tolist()
