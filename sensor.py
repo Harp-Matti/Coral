@@ -77,7 +77,7 @@ def wait(self):
         message = self.comms.receive()
         message_type = type(message)
         if message_type == Run:
-        self.run()
+            self.run()
                
 def main():
     comms = Client('192.168.3.113', 65000)
