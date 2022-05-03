@@ -19,14 +19,30 @@ from timeit import default_timer as timer
 
 from comms.comms import Client, Failure, Success, Run, Result, Get, Set
 
+eps = 1.0e-10
+
+def normalize(x):
+    x -= np.mean(x,1,keepdims=True)
+    x /= np.sqrt(np.mean(np.sum(np.power(x,2))))+self.eps
+    return x
+
+
+def pwelch(x,n):
+    psd = np.zeros((n))
+    w = np.hanning(n)
+    N = int(np.floor((len(x)-n)/(n/2))+1)
+    for i in range(N):
+        psd = psd + abs(np.fft.fft(x[int(i*n/2):int(i*n/2+n)] * w))**2/N
+    #ma = np.amax(psd)
+    #psd = psd/ma
+    return psd.tolist()
+
 class Sensor:
   def __init__(self, comms):
     self.comms = comms
     
     self.N_samples = 2*1024
     self.device = SDR(self.N_samples)
-
-    self.eps = 1.0e-10
     
     #apply settings
     self.device.setSampleRate(3.2e6)
@@ -44,21 +60,6 @@ class Sensor:
     # Initialize the TF interpreter
     self.interpreter = edgetpu.make_interpreter(model_file)
     self.interpreter.allocate_tensors()
-
-  def normalize(x):
-    x -= np.mean(x,1,keepdims=True)
-    x /= np.sqrt(np.mean(np.sum(np.power(x,2))))+eps
-    return x
-  
-  def pwelch(x,n):
-    psd = np.zeros((n))
-    w = np.hanning(n)
-    N = int(np.floor((len(x)-n)/(n/2))+1)
-    for i in range(N):
-        psd = psd + abs(np.fft.fft(x[int(i*n/2):int(i*n/2+n)] * w))**2/N
-    #ma = np.amax(psd)
-    #psd = psd/ma
-    return psd.tolist()
   
   def run(self):
       if self.device.receive() < self.N_samples:
