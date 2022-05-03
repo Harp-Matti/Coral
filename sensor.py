@@ -69,7 +69,9 @@ class Sensor:
             common.set_input(self.interpreter, x)
             self.interpreter.invoke()
             class_result = classify.get_classes(self.interpreter, top_k=1)
-            self.comms.send(Result(class_result[0].id,pwelch(x,128)))
+            spectrum = pwelch(x,128)
+            print(spectrum)
+            self.comms.send(Result(class_result[0].id,spectrum))
         
     def wait(self):
         while True:
