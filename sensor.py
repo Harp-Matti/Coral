@@ -17,7 +17,7 @@ import numpy as np #use numpy for buffers
 
 from timeit import default_timer as timer
 
-from comms.comms import Comms, Failure, Success, Run, Result, Get, Set
+from comms.comms import Client, Failure, Success, Run, Result, Get, Set
 
 class Sensor:
   def __init__(self, comms):
@@ -80,7 +80,7 @@ class Sensor:
                
 def main():
   #comms = Comms('192.168.3.112', 65000)
-  comms = Comms('192.168.3.112', 9990)
+  comms = Client('192.168.3.112', 9990)
   sensor = Sensor(comms)
   sensor.wait()
 
