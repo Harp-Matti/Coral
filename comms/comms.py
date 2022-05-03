@@ -43,7 +43,7 @@ class Comms:
         self.server_address = (host, port)
         #print(f'Starting UDP server on {host} port {port}')
         #self.sock.bind(self.server_address)
-        self.sock.connect(server_address)
+        self.sock.connect(self.server_address)
         
     def receive(self):
         # Wait for message
