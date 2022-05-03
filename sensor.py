@@ -66,8 +66,8 @@ class Sensor:
         x = normalize(np.asarray(self.device.read()).reshape((2,N_samples))).reshape(1,2,N_samples,1)
         common.set_input(self.interpreter, x)
         self.interpreter.invoke()
-        class = classify.get_classes(self.interpreter, top_k=1)
-        self.comms.send(Result(class,pwelch(x,128)))
+        class_result = classify.get_classes(self.interpreter, top_k=1)
+        self.comms.send(Result(class_result,pwelch(x,128)))
         
   def wait(self):
     while true:
