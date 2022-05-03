@@ -70,7 +70,7 @@ class Sensor:
             self.interpreter.invoke()
             class_result = classify.get_classes(self.interpreter, top_k=1)
             spectrum = pwelch(x,128)
-            print(spectrum)
+            #print(spectrum)
             self.comms.send(Result(class_result[0].id,spectrum))
         
     def wait(self):
