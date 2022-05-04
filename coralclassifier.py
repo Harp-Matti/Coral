@@ -12,7 +12,7 @@ class Classifier:
         self.interpreter.allocate_tensors()
         
     def run(self,x):
-        common.set_input(self.interpreter, x.reshape(1,2,self.N_samples,1))
+        common.set_input(self.interpreter, x)
         self.interpreter.invoke()
         class_result = classify.get_classes(self.interpreter, top_k=1)
         return class_result[0].id
