@@ -51,7 +51,6 @@ public:
 		sdr->closeStream(rx_stream);
 		delete buff;
 		SoapySDR::Device::unmake(sdr);
-		delete sdr;
 	}
 	
 	int receive() {
