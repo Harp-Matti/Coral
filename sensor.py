@@ -70,7 +70,7 @@ class Sensor:
         success = True
         if self.device.receive() < self.N_samples:
             print('Receive failed, trying again')
-            if self.device.receive() < self.N_samples
+            if self.device.receive() < self.N_samples:
                 print('Receive failed again, resetting SDR')
                 self.reset()
                 success = False
