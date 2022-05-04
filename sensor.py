@@ -51,9 +51,9 @@ class Sensor:
         self.device = SDR(self.N_samples)
         
         #apply settings
-        self.device.setSampleRate(3.2e6)
-        self.device.setBandwidth(8.0e6)
-        self.device.setFrequency(1.0e9)
+        #self.device.setSampleRate(3.2e6)
+        #self.device.setBandwidth(8.0e6)
+        #self.device.setFrequency(1.0e9)
 
         self.classifier = Classifier(model_file)
         
