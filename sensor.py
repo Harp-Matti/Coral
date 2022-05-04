@@ -57,14 +57,14 @@ class Sensor:
 
         self.classifier = Classifier(model_file)
         
-    def reset():
-        freq = get_parameter('frequency')
-        bw = get_parameter('bandwidth')
-        rate = get_parameter('sample_rate')
+    def reset(self):
+        freq = self.get_parameter('frequency')
+        bw = self.get_parameter('bandwidth')
+        rate = self.get_parameter('sample_rate')
         self.device = SDR(self.N_samples)
-        set_parameter('frequency',freq)
-        set_parameter('bandwidth',bw)
-        set_parameter('sample_rate',rate)
+        self.set_parameter('frequency',freq)
+        self.set_parameter('bandwidth',bw)
+        self.set_parameter('sample_rate',rate)
         
     def run(self):
         if self.device.receive() < self.N_samples:
