@@ -49,7 +49,6 @@ public:
 			deactivateStream();	
 		}
 		sdr->closeStream(rx_stream);
-		delete rx_stream;
 		delete buff;
 		SoapySDR::Device::unmake(sdr);
 		delete sdr;
@@ -64,7 +63,6 @@ public:
 		}
 		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
-		delete buffs;
 		return ret;
 	}
 	
