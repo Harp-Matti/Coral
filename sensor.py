@@ -21,7 +21,7 @@ import numpy as np
 
 from timeit import default_timer as timer
 
-from comms.comms import Client, Failure, Success, Run, Result, Get, Set
+from comms.comms import *
 
 eps = 1.0e-10
 
@@ -63,7 +63,7 @@ class Sensor:
             self.comms.send(Failure())
         else:
             x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
-            class_result = classifier.run(x)
+            class_result = self.classifier.run(x)
             spectrum = pwelch(x,128)
             self.comms.send(Result(class_result,spectrum))
     
