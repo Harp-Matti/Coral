@@ -5,7 +5,6 @@
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Formats.hpp>
 
-#include <memory>
 #include <string>
 #include <vector>
 #include <map>
@@ -33,7 +32,7 @@ public:
 		rates = sdr->getSampleRateRange( SOAPY_SDR_RX, 0);
 		
 		N_samples = N;
-		std::unique_ptr<std::complex<float>[]> b(new std::complex<float>[N]);
+		std::complex<float> b[N];
 		buff = b;
 		
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
@@ -126,7 +125,7 @@ public:
 	SoapySDR::RangeList ranges;
 	SoapySDR::RangeList rates;
 	SoapySDR::Stream *rx_stream;
-	std::unique_ptr<std::complex<float>[]> buff;
+	std::complex<float> *buff;
 	std::string name;
 	bool streamActive;
 	int N_samples;
