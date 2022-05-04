@@ -57,9 +57,19 @@ class Sensor:
 
         self.classifier = Classifier(model_file)
         
+    def reset()
+        freq = get_parameter('frequency')
+        bw = get_parameter('bandwidth')
+        rate = get_parameter('sample_rate')
+        self.device = SDR(self.N_samples)
+        set_parameter('frequency',freq)
+        set_parameter('bandwidth',bw)
+        set_parameter('sample_rate',rate)
+        
     def run(self):
         if self.device.receive() < self.N_samples:
-            print('Receive failed')
+            print('Receive failed, resetting SDR')
+            self.reset()
             self.comms.send(Failure())
         else:
             x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
