@@ -104,7 +104,7 @@ class Sensor:
         else:
             raise Exception('Unknown parameter for method set_parameter')
             
-        return self.get_parameter(parameter) == value 
+        return self.get_parameter(parameter)
         
     def wait(self):
         while True:
@@ -116,11 +116,8 @@ class Sensor:
                 value = self.get_parameter(message.parameter)
                 self.comms.send(Return(message.parameter,value))
             elif message_type == Set:
-                success = self.set_parameter(message.parameter,message.value)
-                if success:
-                    self.comms.send(Success())
-                else:
-                    self.comms.send(Failure())
+                value = self.set_parameter(message.parameter,message.value)
+                self.comms.send(Return(message.parameter,value))
             elif message_type == Exit:
                 exit()
             else:
