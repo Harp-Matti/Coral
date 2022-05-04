@@ -61,6 +61,7 @@ public:
 		}
 		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
+		delete buffs;
 		return ret;
 	}
 	
@@ -121,11 +122,14 @@ public:
 		}
 	}
 	
-	SoapySDR::Device *sdr;
+	//SoapySDR::Device *sdr;
+	std::unique_ptr<SoapySDR::Device> sdr;
 	SoapySDR::RangeList ranges;
 	SoapySDR::RangeList rates;
-	SoapySDR::Stream *rx_stream;
-	std::complex<float> *buff;
+	//SoapySDR::Stream *rx_stream;
+	std::unique_ptr<SoapySDR::Stream> rx_stream;
+	//std::complex<float> *buff;
+	std::unique_ptr<std::complex<float>> buff;
 	std::string name;
 	bool streamActive;
 	int N_samples;
