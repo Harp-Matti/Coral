@@ -67,15 +67,21 @@ class Sensor:
         #self.set_parameter('sample_rate',rate)
         
     def run(self):
+        success = True
         if self.device.receive() < self.N_samples:
-            print('Receive failed, resetting SDR')
-            self.reset()
-            self.comms.send(Failure())
-        else:
+            print('Receive failed, trying again')
+            if self.device.receive() < self.N_samples
+                print('Receive failed again, resetting SDR')
+                self.reset()
+                success = False
+            
+        if success:
             x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
             class_result = self.classifier.run(x)
             spectrum = pwelch(x,128)
             self.comms.send(Result(class_result,spectrum))
+        else:
+            self.comms.send(Failure())
     
     def get_parameter(self,parameter):
         if parameter == 'frequency':
