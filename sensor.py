@@ -63,11 +63,9 @@ class Sensor:
             self.comms.send(Failure())
         else:
             x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
-            common.set_input(self.interpreter, x)
-            self.interpreter.invoke()
-            class_result = classify.get_classes(self.interpreter, top_k=1)
+            class_result = classifier.run(x)
             spectrum = pwelch(x,128)
-            self.comms.send(Result(class_result[0].id,spectrum))
+            self.comms.send(Result(class_result,spectrum))
     
     def get_parameter(self,parameter):
         if parameter == 'frequency':
