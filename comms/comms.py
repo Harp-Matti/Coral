@@ -63,17 +63,17 @@ class Comms:
             elif message_type == 2:
                 return Run()
             elif message_type == 3:
-                ,class_result = unpack_from('ii',message)
+                _ ,class_result = unpack_from('ii',message)
                 spectrum_result = list(unpack_from(int((len(message)-8)/4)*'f',message,8))
                 return Result(class_result, spectrum_result)
             elif message_type == 4:
-                ,ind = unpack_from('ii',message)
+                _ ,ind = unpack_from('ii',message)
                 return Get(inds_to_parameters[ind])
             elif message_type == 5:
-                ,ind, value = unpack_from('iid',message)
+                _ ,ind, value = unpack_from('iid',message)
                 return Set(inds_to_parameters[ind], value)
             elif message_type == 6:
-                ,ind, value = unpack_from('iid',message)
+                _ ,ind, value = unpack_from('iid',message)
                 return Return(inds_to_parameters[ind], value)
             else:
                 raise Exception('Receive error: Unknown message type')
