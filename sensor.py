@@ -57,7 +57,7 @@ class Sensor:
 
         self.classifier = Classifier(model_file)
         
-    def reset()
+    def reset():
         freq = get_parameter('frequency')
         bw = get_parameter('bandwidth')
         rate = get_parameter('sample_rate')
