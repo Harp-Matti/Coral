@@ -33,8 +33,7 @@ public:
 		rates = sdr->getSampleRateRange( SOAPY_SDR_RX, 0);
 		
 		N_samples = N;
-		std::complex<float> b[N];
-		buff = b;
+		buff = std::make_unique<std::complex<float>[]>(N);
 		
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
 		if(rx_stream == NULL)
