@@ -58,6 +58,7 @@ class Sensor:
         self.classifier = Classifier(model_file)
         
     def reset(self):
+        del self.device
         self.device = SDR(self.N_samples)
         self.device.setSampleRate(3.2e6)
         self.device.setBandwidth(8.0e6)
