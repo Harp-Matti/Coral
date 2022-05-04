@@ -5,6 +5,7 @@
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Formats.hpp>
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
