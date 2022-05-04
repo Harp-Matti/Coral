@@ -47,7 +47,7 @@ class Return(Message):
 class Comms:
     def __init__(self,port):   
         self.sock = socket.socket()
-        error('The base class Comms should not be used: use either Server or Client')
+        raise Exception('The base class Comms should not be used: use either Server or Client')
 
     def receive(self):
         # Wait for message
@@ -76,7 +76,7 @@ class Comms:
                 ind, value = unpack_from('id',message,4)
                 return Return(inds_to_parameters[ind], value)
             else:
-                error('Receive error: Unknown message type')
+                raise Exception('Receive error: Unknown message type')
             
     def send(self, message):
         if isinstance(message,Message):
@@ -100,9 +100,9 @@ class Comms:
                 ind = parameters_to_inds[message.parameter]
                 self.sock.send(pack('iid', 6, ind, message.value))
             else:
-                error('Send error: Unknown message type')
+                raise Exception('Send error: Unknown message type')
         else:
-            error('Send error: Invalid message')
+            raise Exception('Send error: Invalid message')
 
 class Server(Comms):
     def __init__(self,port):   

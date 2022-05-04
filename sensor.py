@@ -8,7 +8,7 @@ if machine == 'aarch64':
 elif machine == 'r': # TODO: find machine for raspberry
     from tfclassifier import Classifier
 else: 
-    error('Unknown machine')
+    raise Exception('Unknown machine')
 
 import socket
 import sys
@@ -91,7 +91,7 @@ class Sensor:
         elif parameter == 'sample_rate':
             return self.device.getSampleRate()
         else:
-            error('Unknown parameter for method get_parameter')
+            raise Exception('Unknown parameter for method get_parameter')
     
     def set_parameter(self,parameter,value):
         if parameter == 'frequency':
@@ -101,7 +101,7 @@ class Sensor:
         elif parameter == 'sample_rate':
             self.device.setSampleRate(value)
         else:
-            error('Unknown parameter for method set_parameter')
+            raise Exception('Unknown parameter for method set_parameter')
             
         return self.get_parameter(parameter) == value 
         
@@ -123,7 +123,7 @@ class Sensor:
             elif message_type == Exit:
                 exit()
             else:
-                error('Unknown message type')
+                raise Exception('Unknown message type')
                
 def main():
     comms = Client('192.168.3.113', 65000)
