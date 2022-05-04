@@ -5,6 +5,7 @@
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Formats.hpp>
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
@@ -49,7 +50,6 @@ public:
 			deactivateStream();	
 		}
 		sdr->closeStream(rx_stream);
-		delete buff;
 		SoapySDR::Device::unmake(sdr);
 	}
 	
@@ -126,7 +126,7 @@ public:
 	SoapySDR::RangeList ranges;
 	SoapySDR::RangeList rates;
 	SoapySDR::Stream *rx_stream;
-	std::complex<float> *buff;
+	std::unique_ptr<std::complex<float>> buff;
 	std::string name;
 	bool streamActive;
 	int N_samples;
