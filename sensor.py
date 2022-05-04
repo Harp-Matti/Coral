@@ -73,9 +73,9 @@ class Sensor:
         if parameter == 'frequency':
             return self.device.getFrequency()
         elif parameter == 'bandwidth':
-            return = self.device.getBandwidth()
+            return self.device.getBandwidth()
         elif parameter == 'sample_rate':
-            return = self.device.getSampleRate()
+            return self.device.getSampleRate()
         else:
             error('Unknown parameter for method get_parameter')
     
