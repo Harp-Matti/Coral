@@ -1,10 +1,14 @@
 import os
 import pathlib
-from pycoral.utils import edgetpu
-from pycoral.utils import dataset
-from pycoral.adapters import common
-from pycoral.adapters import classify
-#import tflite_runtime.interpreter as tflite
+import platform
+
+machine = platform.uname().machine
+if machine == 'aarch64':
+    from coralclassifier import Classifier
+elif machine == 'r': # TODO: find machine for raspberry
+    from tfclassifier import Classifier
+else: 
+    error('Unknown machine')
 
 import socket
 import sys
@@ -13,13 +17,16 @@ import random
 from struct import pack
 
 from sdr.sdr import SDR
-import numpy as np #use numpy for buffers
+import numpy as np
 
 from timeit import default_timer as timer
 
 from comms.comms import Client, Failure, Success, Run, Result, Get, Set
 
 eps = 1.0e-10
+
+script_dir = pathlib.Path(__file__).parent.absolute()
+model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
 
 def normalize(x):
     x -= np.mean(x,1,keepdims=True)
@@ -48,18 +55,8 @@ class Sensor:
         self.device.setBandwidth(8.0e6)
         self.device.setFrequency(1.0e9)
 
-        # Specify the TensorFlow model, labels, and image
-        script_dir = pathlib.Path(__file__).parent.absolute()
-        #model_file = os.path.join(script_dir, 'model_augmod_quant_edgetpu.tflite')
-        model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
+        self.classifier = Classifier(model_file)
         
-        #self.label_file = os.path.join(script_dir, 'classes_hfradio.txt')
-        #labels = dataset.read_label_file(label_file)
-
-        # Initialize the TF interpreter
-        self.interpreter = edgetpu.make_interpreter(model_file)
-        self.interpreter.allocate_tensors()
-  
     def run(self):
         if self.device.receive() < self.N_samples:
             print('Receive failed')
@@ -70,8 +67,29 @@ class Sensor:
             self.interpreter.invoke()
             class_result = classify.get_classes(self.interpreter, top_k=1)
             spectrum = pwelch(x,128)
-            #print(spectrum)
             self.comms.send(Result(class_result[0].id,spectrum))
+    
+    def get_parameter(self,parameter):
+        if parameter == 'frequency':
+            return self.device.getFrequency()
+        elif parameter == 'bandwidth':
+            return = self.device.getBandwidth()
+        elif parameter == 'sample_rate':
+            return = self.device.getSampleRate()
+        else:
+            error('Unknown parameter for method get_parameter')
+    
+    def set_parameter(self,parameter,value):
+        if parameter == 'frequency':
+            self.device.setFrequency(value)
+        elif parameter == 'bandwidth':
+            self.device.setBandwidth(value)
+        elif parameter == 'sample_rate':
+            self.device.setSampleRate(value)
+        else:
+            error('Unknown parameter for method set_parameter')
+            
+        return self.get_parameter(parameter) == value 
         
     def wait(self):
         while True:
@@ -79,10 +97,22 @@ class Sensor:
             message_type = type(message)
             if message_type == Run:
                 self.run()
+            elif message_type == Get:
+                value = self.get_parameter(message.parameter)
+                self.comms.send(Return(message.parameter,value))
+            elif message_type == Set:
+                success = self.set_parameter(message.parameter,message.value)
+                if success:
+                    self.comms.send(Success())
+                else:
+                    self.comms.send(Failure())
+            elif message_type == Exit:
+                exit()
+            else:
+                error('Unknown message type')
                
 def main():
     comms = Client('192.168.3.113', 65000)
-    #comms = Client('127.0.0.1', 65000)
     sensor = Sensor(comms)
     sensor.wait()
 
