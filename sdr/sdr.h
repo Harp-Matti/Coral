@@ -121,6 +121,14 @@ public:
 		}
 	}
 	
+	std::vector<std::pair<float,float>> getRates() {
+		std::vector<std::pair<float,float>> output;
+		for (int i=0; i < rates.size(); i++){
+			output.push_back(std::make_pair(rates[i].minimum(),rates[i].maximum()));
+		}
+		return output;	
+	}
+	
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList ranges;
 	SoapySDR::RangeList rates;
