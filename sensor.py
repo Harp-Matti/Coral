@@ -50,11 +50,11 @@ class Sensor:
         self.N_samples = 2*1024
         self.device = SDR(self.N_samples)
         
-        #apply settings
-        #self.device.setSampleRate(3.2e6)
-        #self.device.setBandwidth(8.0e6)
-        #self.device.setFrequency(1.0e9)
-
+        self.timeout = 10
+        self.params = ['frequency','bandwidth','sample_rate']
+        self.values = []
+        for par in params:
+            self.values.append(self.get_parameter(par))
         self.classifier = Classifier(model_file)
         
     def reset(self):        
@@ -67,16 +67,16 @@ class Sensor:
         #self.set_parameter('bandwidth',bw)
         #self.set_parameter('sample_rate',rate)
         
-    def run(self):
-        success = True
-        if self.device.receive() < self.N_samples:
-            print('Receive failed, trying again')
-            if self.device.receive() < self.N_samples:
-                print('Receive failed again, resetting SDR')
-                self.reset()
-                success = False
+    def run(self): 
+        i = 0
+        while self.device.receive() < self.N_samples and i < self.timeout:
+            print('Receive failed, resetting SDR')
+            self.reset()
+            for j in range(len(self.params)):
+                self.set_parameter(self.params[j],self.values[j])
+            i += 1
             
-        if success:
+        if i < self.timeout:
             x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
             class_result = self.classifier.run(x)
             spectrum = pwelch(x,128)
@@ -97,14 +97,20 @@ class Sensor:
     def set_parameter(self,parameter,value):
         if parameter == 'frequency':
             self.device.setFrequency(value)
+            new_value = self.get_parameter(parameter)
+            self.values[0] = new_value
         elif parameter == 'bandwidth':
             self.device.setBandwidth(value)
+            new_value = self.get_parameter(parameter)
+            self.values[1] = new_value
         elif parameter == 'sample_rate':
             self.device.setSampleRate(value)
+            new_value = self.get_parameter(parameter)
+            self.values[2] = new_value
         else:
             raise Exception('Unknown parameter for method set_parameter')
             
-        return self.get_parameter(parameter)
+        return new_value
         
     def wait(self):
         while True:
