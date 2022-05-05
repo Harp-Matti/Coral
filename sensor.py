@@ -51,7 +51,7 @@ class Sensor:
         self.device = SDR(self.N_samples)
         r = self.device.getRates()
         self.rates = []
-        for i in range(len(r)/2):
+        for i in range(int(len(r)/2)):
             self.rates.append((r[2*i],r[2*i+1]))
             
         self.timeout = 10
