@@ -121,10 +121,11 @@ public:
 		}
 	}
 	
-	std::vector<std::pair<float,float>> getRates() {
-		std::vector<std::pair<float,float>> output;
+	std::vector<float> getRates() {
+		std::vector<float> output;
 		for (int i=0; i < rates.size(); i++){
-			output.push_back(std::make_pair(rates[i].minimum(),rates[i].maximum()));
+			output.push_back(rates[i].minimum());
+			output.push_back(rates[i].maximum());
 		}
 		return output;	
 	}
