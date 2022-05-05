@@ -49,13 +49,14 @@ class Sensor:
         
         self.N_samples = 2*1024
         self.device = SDR(self.N_samples)
-        
+        r = self.device.getRates()
+        self.rates = []
+        for i in range(len(r)/2):
+            self.rates.append((r[2*i],r[2*i+1]))
+            
         self.timeout = 10
         self.params = ['frequency','bandwidth','sample_rate']
         self.values = []
-        self.rates = self.device.getRates()
-        for r in self.rates:
-            print(r)
         for par in self.params:
             self.values.append(self.get_parameter(par))
         self.classifier = Classifier(model_file)
@@ -87,6 +88,20 @@ class Sensor:
         else:
             self.comms.send(Failure())
     
+    def valid_rate(self,rate):
+        dist = infty
+        match = -1.0
+        for low, high in self.rates:
+            if rate >= low and rate <= high:
+                return rate
+            if abs(rate-low) < dist:
+                dist = abs(rate-low)
+                match = low
+            if abs(rate-high) < dist:
+                dist = abs(rate-high)
+                match = high
+        return match
+    
     def get_parameter(self,parameter):
         if parameter == 'frequency':
             return self.device.getFrequency()
@@ -107,7 +122,7 @@ class Sensor:
             new_value = self.get_parameter(parameter)
             self.values[1] = new_value
         elif parameter == 'sample_rate':
-            self.device.setSampleRate(value)
+            self.device.setSampleRate(self.valid_rate(value))
             new_value = self.get_parameter(parameter)
             self.values[2] = new_value
         else:
