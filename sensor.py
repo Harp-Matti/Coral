@@ -53,7 +53,7 @@ class Sensor:
         self.timeout = 10
         self.params = ['frequency','bandwidth','sample_rate']
         self.values = []
-        for par in params:
+        for par in self.params:
             self.values.append(self.get_parameter(par))
         self.classifier = Classifier(model_file)
         
