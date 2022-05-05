@@ -53,7 +53,11 @@ class Sensor:
         self.rates = []
         for i in range(int(len(r)/2)):
             self.rates.append((r[2*i],r[2*i+1]))
-            
+        b = self.device.getWidths()
+        self.widths = []
+        for i in range(int(len(b)/2)):
+            self.widths.append((b[2*i],b[2*i+1]))        
+           
         self.timeout = 10
         self.params = ['frequency','bandwidth','sample_rate']
         self.values = []
@@ -101,6 +105,20 @@ class Sensor:
                 dist = abs(rate-high)
                 match = high
         return match
+        
+    def valid_width(self,width):
+        dist = float('inf')
+        match = -1.0
+        for low, high in self.widths:
+            if width >= low and width <= high:
+                return width
+            if abs(width-low) < dist:
+                dist = abs(width-low)
+                match = low
+            if abs(width-high) < dist:
+                dist = abs(width-high)
+                match = high
+        return match
     
     def get_parameter(self,parameter):
         if parameter == 'frequency':
@@ -118,7 +136,7 @@ class Sensor:
             new_value = self.get_parameter(parameter)
             self.values[0] = new_value
         elif parameter == 'bandwidth':
-            self.device.setBandwidth(value)
+            self.device.setBandwidth(self.valid_width(value))
             new_value = self.get_parameter(parameter)
             self.values[1] = new_value
         elif parameter == 'sample_rate':

@@ -30,6 +30,7 @@ public:
 		
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
 		rates = sdr->getSampleRateRange( SOAPY_SDR_RX, 0);
+		bandwidths = sdr->getBandwidthRange( SOAPY_SDR_RX, 0);
 		
 		N_samples = N;
 		std::complex<float> b[N];
@@ -130,7 +131,17 @@ public:
 		return output;	
 	}
 	
+	std::vector<float> getWidths() {
+		std::vector<float> output;
+		for (int i=0; i < bandwidths.size(); i++){
+			output.push_back(bandwidths[i].minimum());
+			output.push_back(bandwidths[i].maximum());
+		}
+		return output;	
+	}
+	
 	SoapySDR::Device *sdr;
+	SoapySDR::RangeList bandwidths;
 	SoapySDR::RangeList ranges;
 	SoapySDR::RangeList rates;
 	SoapySDR::Stream *rx_stream;
