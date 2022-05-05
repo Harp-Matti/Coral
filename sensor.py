@@ -89,7 +89,7 @@ class Sensor:
             self.comms.send(Failure())
     
     def valid_rate(self,rate):
-        dist = infty
+        dist = float('inf')
         match = -1.0
         for low, high in self.rates:
             if rate >= low and rate <= high:
