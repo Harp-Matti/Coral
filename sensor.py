@@ -154,9 +154,10 @@ class Sensor:
         return new_value
         
     def wait(self):
-        print('Waiting for instructions')
         while True:
+            print('Waiting for instructions')
             message = self.comms.receive()
+            print('Instructions received')
             message_type = type(message)
             if message_type == Run:
                 if message.index < len(self.classifiers):
@@ -170,6 +171,7 @@ class Sensor:
                 value = self.set_parameter(message.parameter,message.value)
                 self.comms.send(Return(message.parameter,value))
             elif message_type == Exit:
+                print('Exiting')
                 exit()
             else:
                 raise Exception('Unknown message type')
