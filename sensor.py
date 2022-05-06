@@ -59,6 +59,7 @@ class Sensor:
         self.widths = []
         for i in range(int(len(b)/2)):
             self.widths.append((b[2*i],b[2*i+1]))        
+        print('SDR set')
            
         self.timeout = 10
         self.params = ['frequency','bandwidth','sample_rate']
@@ -68,21 +69,19 @@ class Sensor:
         self.classifiers = []
         self.classifiers.append(NeuralNet(model_file))
         self.classifiers.append(RandomForest(rf_file))
+        print('Classifiers loaded')
         
-    def reset(self):        
+    def reset(self):
         del self.device
         self.device = SDR(self.N_samples)
-        self.device.setSampleRate(3.2e6)
-        self.device.setBandwidth(8.0e6)
-        self.device.setFrequency(1.0e9)
-        #self.set_parameter('frequency',freq)
-        #self.set_parameter('bandwidth',bw)
-        #self.set_parameter('sample_rate',rate)
+        self.set_parameter('frequency',values[0])
+        self.set_parameter('bandwidth',values[1])
+        self.set_parameter('sample_rate',values[2])
+        print('Device reset')
         
     def run(self,index): 
         i = 0
         while self.device.receive() < self.N_samples and i < self.timeout:
-            print('Receive failed, resetting SDR')
             self.reset()
             for j in range(len(self.params)):
                 self.set_parameter(self.params[j],self.values[j])
@@ -93,6 +92,7 @@ class Sensor:
             class_result = self.classifiers[index].run(x)
             spectrum = pwelch(x,128)
             self.comms.send(Result(class_result,spectrum))
+            print('Result sent')
         else:
             self.comms.send(Failure())
     
@@ -150,9 +150,11 @@ class Sensor:
         else:
             raise Exception('Unknown parameter for method set_parameter')
             
+        print(parameter + ' set')
         return new_value
         
     def wait(self):
+        print('Waiting for instructions')
         while True:
             message = self.comms.receive()
             message_type = type(message)
