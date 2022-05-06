@@ -1,16 +1,16 @@
 import os
 import pathlib
 import platform
-
-machine = platform.uname().machine
-if machine == 'aarch64':
-    from coralclassifier import Classifier
-elif machine == 'r': # TODO: find machine for raspberry
-    from tfclassifier import Classifier
-else: 
-    raise Exception('Unknown machine')
-
 import socket
+
+hostname = socket.gethostname()
+if hostname == 'aarch64':
+    from coralclassifier import *
+elif hostname == 'rpi4-20220121':
+    from tfclassifier import *
+else: 
+    raise Exception('Unknown platform')
+
 import sys
 from time import sleep
 import random
@@ -27,6 +27,7 @@ eps = 1.0e-10
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
+rf_file = os.path.join(script_dir, 'model_ababoost.joblib')
 
 def normalize(x):
     x -= np.mean(x,1,keepdims=True)
@@ -63,7 +64,9 @@ class Sensor:
         self.values = []
         for par in self.params:
             self.values.append(self.get_parameter(par))
-        self.classifier = Classifier(model_file)
+        self.classifiers = []
+        self.classifiers.append(NeuralNetwork(model_file))
+        self.classifiers.append(RandomForest(rf_file))
         
     def reset(self):        
         del self.device
@@ -75,7 +78,7 @@ class Sensor:
         #self.set_parameter('bandwidth',bw)
         #self.set_parameter('sample_rate',rate)
         
-    def run(self): 
+    def run(self,index): 
         i = 0
         while self.device.receive() < self.N_samples and i < self.timeout:
             print('Receive failed, resetting SDR')
@@ -86,7 +89,7 @@ class Sensor:
             
         if i < self.timeout:
             x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
-            class_result = self.classifier.run(x)
+            class_result = self.classifiers[index].run(x)
             spectrum = pwelch(x,128)
             self.comms.send(Result(class_result,spectrum))
         else:
@@ -153,7 +156,10 @@ class Sensor:
             message = self.comms.receive()
             message_type = type(message)
             if message_type == Run:
-                self.run()
+                if message.index < len(self.classifiers):
+                    self.run(message.index)
+                else:
+                    raise Exception('Run error: invalid classifier index')
             elif message_type == Get:
                 value = self.get_parameter(message.parameter)
                 self.comms.send(Return(message.parameter,value))

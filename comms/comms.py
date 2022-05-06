@@ -23,7 +23,8 @@ class Success(Message):
     pass
     
 class Run(Message):
-    pass
+    def __init__(self.index):
+        self.index = index
     
 class Result(Message):
     def __init__(self,class_result,spectrum_result):
@@ -61,7 +62,8 @@ class Comms:
             elif message_type == 1:
                 return Success()
             elif message_type == 2:
-                return Run()
+                _ ,index = unpack_from('ii',message)
+                return Run(index)
             elif message_type == 3:
                 _ ,class_result = unpack_from('ii',message)
                 spectrum_result = list(unpack_from(int((len(message)-8)/4)*'f',message,8))
@@ -86,7 +88,7 @@ class Comms:
             elif message_type == Success:
                 self.sock.send(pack('i',1))
             elif message_type == Run:
-                self.sock.send(pack('i',2))
+                self.sock.send(pack('ii', 2, message.index))
             elif message_type == Result:
                 N = len(message.spectrum_result)
                 self.sock.send(pack('ii%sf' % N, 3, message.class_result, *message.spectrum_result))
