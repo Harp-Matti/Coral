@@ -18,7 +18,7 @@ class NeuralNet(Classifier):
         self.output_details = self.interpreter.get_output_details()
 
     def run(self,x):
-        self.interpreter.set_tensor(self.input_details[0]['index'], x)
+        self.interpreter.set_tensor(self.input_details[0]['index'], x.astype(np.int8))
         self.interpreter.invoke()
         output_data = self.interpreter.get_tensor(self.output_details[0]['index'])
         results = np.squeeze(output_data)
