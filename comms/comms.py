@@ -23,7 +23,7 @@ class Success(Message):
     pass
     
 class Run(Message):
-    def __init__(self.index):
+    def __init__(self,index):
         self.index = index
     
 class Result(Message):
