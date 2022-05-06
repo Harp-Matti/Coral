@@ -28,7 +28,7 @@ from comms.comms import *
 
 eps = 1.0e-10
 
-rf_file = os.path.join(script_dir, 'model_ababoost.joblib')
+rf_file = os.path.join(script_dir, 'model_adaboost.joblib')
 
 def normalize(x):
     x -= np.mean(x,1,keepdims=True)
