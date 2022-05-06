@@ -65,7 +65,7 @@ class Sensor:
         for par in self.params:
             self.values.append(self.get_parameter(par))
         self.classifiers = []
-        self.classifiers.append(NeuralNetwork(model_file))
+        self.classifiers.append(NeuralNet(model_file))
         self.classifiers.append(RandomForest(rf_file))
         
     def reset(self):        
