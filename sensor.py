@@ -3,11 +3,14 @@ import pathlib
 import platform
 import socket
 
+script_dir = pathlib.Path(__file__).parent.absolute()
 hostname = socket.gethostname()
 if hostname == 'aarch64':
     from coralclassifier import *
+    model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
 elif hostname == 'rpi4-20220121':
     from tfclassifier import *
+    model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant.tflite')
 else: 
     raise Exception('Unknown platform')
 
@@ -25,8 +28,6 @@ from comms.comms import *
 
 eps = 1.0e-10
 
-script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
 rf_file = os.path.join(script_dir, 'model_ababoost.joblib')
 
 def normalize(x):
