@@ -12,7 +12,7 @@ class Classifier:
     
 class NeuralNet(Classifier):
     def __init__(self, model_file):
-        self.interpreter = tflite.interpreter(model_file)
+        self.interpreter = tflite.Interpreter(model_file)
         self.interpreter.allocate_tensors()
         self.input_details = self.interpreter.get_input_details()
         self.output_details = self.interpreter.get_output_details()
