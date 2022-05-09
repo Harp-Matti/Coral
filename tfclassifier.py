@@ -28,7 +28,7 @@ class RandomForest(Classifier):
     def __init__(self, model_file):
         self.model = load(model_file)
 
-    def features(x):
+    def features(self,x):
         s = x[0,:]+1j*x[1,:]
         cs = np.conj(s)
         s2 = np.power(s,2)
@@ -42,4 +42,4 @@ class RandomForest(Classifier):
         return np.asarray([np.absolute(C40)/(np.absolute(C42)+eps),np.absolute(C41)/(np.absolute(C42)+eps),np.power(np.absolute(C63),2)/(np.power(np.absolute(C42),3)+eps)])
 
     def run(self,x):
-        return self.model.predict(features(x))
+        return self.model.predict(self.features(x))
