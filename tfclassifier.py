@@ -27,6 +27,7 @@ class NeuralNet(Classifier):
 class RandomForest(Classifier):
     def __init__(self, model_file):
         self.model = load(model_file)
+        self.eps = 1.0e-10
 
     def features(self,x):
         s = np.squeeze(x[0,0,:,0]+1j*x[0,1,:,0])
@@ -39,7 +40,7 @@ class RandomForest(Classifier):
         C41 = np.sum(s2*s*cs)-3*M21*M20
         C42 = np.sum(s2*cs2)-np.absolute(M20*M20)-2*M21*M21
         C63 = np.sum(s2*s*cs2*cs)-9*C42*M21-6*M21*M21*M21
-        return np.asarray([np.absolute(C40)/(np.absolute(C42)+eps),np.absolute(C41)/(np.absolute(C42)+eps),np.power(np.absolute(C63),2)/(np.power(np.absolute(C42),3)+eps)])
+        return np.asarray([np.absolute(C40)/(np.absolute(C42)+self.eps),np.absolute(C41)/(np.absolute(C42)+self.eps),np.power(np.absolute(C63),2)/(np.power(np.absolute(C42),3)+self.eps)])
 
     def run(self,x):
-        return self.model.predict(self.features(x))
+        return self.model.predict(self.features(x).reshape(1,-1))
