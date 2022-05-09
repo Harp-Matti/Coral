@@ -5,7 +5,7 @@ import socket
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 hostname = socket.gethostname()
-if hostname == 'aarch64':
+if hostname == 'xenial-dog':
     from coralclassifier import *
     model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
 elif hostname == 'rpi4-20220121':
@@ -157,7 +157,6 @@ class Sensor:
         while True:
             print('Waiting for instructions')
             message = self.comms.receive()
-            print('Instructions received')
             message_type = type(message)
             if message_type == Run:
                 if message.index < len(self.classifiers):
