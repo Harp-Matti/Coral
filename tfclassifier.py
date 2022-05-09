@@ -29,7 +29,7 @@ class RandomForest(Classifier):
         self.model = load(model_file)
 
     def features(self,x):
-        s = x[0,:]+1j*x[1,:]
+        s = np.squeeze(x[0,0,:,0]+1j*x[0,1,:,0])
         cs = np.conj(s)
         s2 = np.power(s,2)
         cs2 = np.conj(s2)
