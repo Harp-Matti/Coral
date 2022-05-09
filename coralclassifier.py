@@ -43,4 +43,4 @@ class RandomForest(Classifier):
         return np.asarray([np.absolute(C40)/(np.absolute(C42)+eps),np.absolute(C41)/(np.absolute(C42)+eps),np.power(np.absolute(C63),2)/(np.power(np.absolute(C42),3)+eps)])
         
     def run(self,x):
-        return self.model.predict(features(x))
+        return self.model.predict(self.features(x))
