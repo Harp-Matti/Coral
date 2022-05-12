@@ -90,8 +90,10 @@ class Sensor:
             i += 1
             
         if i < self.timeout:
-            x = normalize(np.asarray(self.device.read()).reshape((2,self.N_samples))).reshape(1,2,self.N_samples,1)
-            class_result = self.classifiers[index].run(x)
+            s = np.asarray(self.device.read()).reshape((2,self.N_samples)) 
+            x = s.reshape(1,2,self.N_samples,1)
+            x_n = normalize(s).reshape(1,2,self.N_samples,1)
+            class_result = self.classifiers[index].run(x_n)
             spectrum = pwelch(x,128)
             self.comms.send(Result(class_result,spectrum))
             print('Result sent')
