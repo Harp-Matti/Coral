@@ -43,6 +43,8 @@ public:
 			SoapySDR::Device::unmake(sdr);
 		}
 		streamActive = false;
+		
+		sdr->setGainMode(false);
 	}
 	
 	~SDR() {
@@ -114,6 +116,14 @@ public:
 		} else {
 			fprintf(stderr, "Frequency out of bounds\n");
 		}
+	}
+	
+	bool getGainMode(){
+		return sdr->getGainMode(SOAPY_SDR_RX, 0);
+	}
+	
+	void setGainMode(bool automatic){
+		sdr->setGainMode(SOAPY_SDR_RX, 0, automatic);
 	}
 	
 	void listRates(){
