@@ -61,10 +61,11 @@ class Sensor:
         self.widths = []
         for i in range(int(len(b)/2)):
             self.widths.append((b[2*i],b[2*i+1]))        
+        self.gains = self.device.getGains()
         print('SDR set')
            
         self.timeout = 10
-        self.params = ['frequency','bandwidth','sample_rate']
+        self.params = ['frequency','bandwidth','sample_rate','gain']
         self.values = []
         for par in self.params:
             self.values.append(self.get_parameter(par))
@@ -79,6 +80,7 @@ class Sensor:
         self.set_parameter('frequency',self.values[0])
         self.set_parameter('bandwidth',self.values[1])
         self.set_parameter('sample_rate',self.values[2])
+        self.set_parameter('gain',self.values[2])
         print('Device reset')
         
     def run(self,index): 
@@ -127,6 +129,16 @@ class Sensor:
                 dist = abs(width-high)
                 match = high
         return match
+        
+    def valid_gain(self,gain):
+        low = self.gains[0]
+        high = self.gains[1]
+        if gain >= low and gain <= high:
+            return gain
+        elif gain < low:
+            return low
+        elif gain > high:
+            return high
     
     def get_parameter(self,parameter):
         if parameter == 'frequency':
@@ -135,6 +147,8 @@ class Sensor:
             return self.device.getBandwidth()
         elif parameter == 'sample_rate':
             return self.device.getSampleRate()
+        elif parameter == 'gain':
+            return self.device.getGain()
         else:
             raise Exception('Unknown parameter for method get_parameter')
     
@@ -151,6 +165,10 @@ class Sensor:
             self.device.setSampleRate(self.valid_rate(value))
             new_value = self.get_parameter(parameter)
             self.values[2] = new_value
+        elif parameter == 'gain':
+            self.device.setGain(self.valid_gain(value))
+            new_value = self.get_parameter(parameter)
+            self.values[3] = new_value
         else:
             raise Exception('Unknown parameter for method set_parameter')
             

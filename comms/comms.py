@@ -3,11 +3,12 @@ import sys
 import time
 from struct import pack, unpack, unpack_from
 
-inds_to_parameters = ['frequency','bandwidth','sample_rate']
+inds_to_parameters = ['frequency','bandwidth','sample_rate','gain']
 parameters_to_inds = {
     'frequency': 0,
     'bandwidth': 1,
-    'sample_rate': 2
+    'sample_rate': 2,
+    'gain': 3
 }
 
 class Message:

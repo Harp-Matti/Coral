@@ -31,18 +31,18 @@ public:
 		ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
 		rates = sdr->getSampleRateRange( SOAPY_SDR_RX, 0);
 		bandwidths = sdr->getBandwidthRange( SOAPY_SDR_RX, 0);
+		gains = sdr->getGainRange( SOAPY_SDR_RX, 0);
 		
 		N_samples = N;
 		std::complex<float> b[N];
 		buff = b;
-		
+
 		rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
 		if(rx_stream == NULL)
 		{
 			fprintf( stderr, "Failed\n");
 			SoapySDR::Device::unmake(sdr);
 		}
-		streamActive = false;
 		
 		this->setGainMode(false);
 	}
@@ -96,6 +96,10 @@ public:
 	
 	void setSampleRate(double rate){
 		sdr->setSampleRate(SOAPY_SDR_RX, 0, rate);
+		if (streamActive){
+			deactivateStream();
+			activateStream();			
+		}
 	}
 	
 	double getBandwidth(){
@@ -104,6 +108,10 @@ public:
 	
 	void setBandwidth(double bw){
 		sdr->setBandwidth(SOAPY_SDR_RX, 0, bw);
+		if (streamActive){
+			deactivateStream();
+			activateStream();			
+		}
 	}
 	
 	double getFrequency(){
@@ -116,6 +124,10 @@ public:
 		} else {
 			fprintf(stderr, "Frequency out of bounds\n");
 		}
+		if (streamActive){
+			deactivateStream();
+			activateStream();			
+		}
 	}
 	
 	bool getGainMode(){
@@ -124,6 +136,22 @@ public:
 	
 	void setGainMode(bool automatic){
 		sdr->setGainMode(SOAPY_SDR_RX, 0, automatic);
+		if (streamActive){
+			deactivateStream();
+			activateStream();			
+		}
+	}
+	
+	double getGain(){
+		return sdr->getGain(SOAPY_SDR_RX, 0);
+	}
+	
+	void setGain(double gain){
+		sdr->setGain(SOAPY_SDR_RX, 0, gain);
+		if (streamActive){
+			deactivateStream();
+			activateStream();			
+		}
 	}
 	
 	void listRates(){
@@ -150,13 +178,21 @@ public:
 		return output;	
 	}
 	
+	std::vector<float> getGains() {
+		std::vector<float> output;
+		output.push_back(gains.minimum());
+		output.push_back(gains.maximum());
+		return output;	
+	}
+	
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList bandwidths;
 	SoapySDR::RangeList ranges;
 	SoapySDR::RangeList rates;
+	SoapySDR::Range gains;
 	SoapySDR::Stream *rx_stream;
 	std::complex<float> *buff;
 	std::string name;
-	bool streamActive;
+	bool streamActive = false;
 	int N_samples;
 };
