@@ -44,7 +44,7 @@ public:
 		}
 		streamActive = false;
 		
-		sdr->setGainMode(false);
+		this->setGainMode(false);
 	}
 	
 	~SDR() {
