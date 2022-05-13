@@ -44,7 +44,7 @@ public:
 			SoapySDR::Device::unmake(sdr);
 		}
 		
-		this->setGainMode(false);
+		setGainMode(false);
 	}
 	
 	~SDR() {
@@ -95,11 +95,10 @@ public:
 	}
 	
 	void setSampleRate(double rate){
-		sdr->setSampleRate(SOAPY_SDR_RX, 0, rate);
 		if (streamActive){
-			deactivateStream();
-			activateStream();			
+			deactivateStream();	
 		}
+		sdr->setSampleRate(SOAPY_SDR_RX, 0, rate);
 	}
 	
 	double getBandwidth(){
@@ -107,11 +106,10 @@ public:
 	}
 	
 	void setBandwidth(double bw){
-		sdr->setBandwidth(SOAPY_SDR_RX, 0, bw);
 		if (streamActive){
-			deactivateStream();
-			activateStream();			
+			deactivateStream();	
 		}
+		sdr->setBandwidth(SOAPY_SDR_RX, 0, bw);
 	}
 	
 	double getFrequency(){
@@ -119,14 +117,13 @@ public:
 	}
 	
 	void setFrequency(double freq){
+		if (streamActive){
+			deactivateStream();	
+		}
 		if (freq >= ranges.front().minimum() && freq <= ranges.back().maximum()){
 			sdr->setFrequency(SOAPY_SDR_RX, 0, freq);
 		} else {
 			fprintf(stderr, "Frequency out of bounds\n");
-		}
-		if (streamActive){
-			deactivateStream();
-			activateStream();			
 		}
 	}
 	
@@ -135,11 +132,10 @@ public:
 	}
 	
 	void setGainMode(bool automatic){
-		sdr->setGainMode(SOAPY_SDR_RX, 0, automatic);
 		if (streamActive){
-			deactivateStream();
-			activateStream();			
+			deactivateStream();	
 		}
+		sdr->setGainMode(SOAPY_SDR_RX, 0, automatic);
 	}
 	
 	double getGain(){
@@ -147,11 +143,10 @@ public:
 	}
 	
 	void setGain(double gain){
-		sdr->setGain(SOAPY_SDR_RX, 0, gain);
 		if (streamActive){
-			deactivateStream();
-			activateStream();			
+			deactivateStream();	
 		}
+		sdr->setGain(SOAPY_SDR_RX, 0, gain);
 	}
 	
 	void listRates(){
