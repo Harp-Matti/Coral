@@ -20,6 +20,7 @@ class NeuralNet(Classifier):
         self.interpreter.allocate_tensors()
         
     def run(self,x):
+        print(x)
         common.set_input(self.interpreter, x)
         self.interpreter.invoke()
         class_result = classify.get_classes(self.interpreter, top_k=1)
