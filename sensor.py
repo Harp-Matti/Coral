@@ -34,7 +34,7 @@ rf_file = os.path.join(script_dir, 'model_adaboost.joblib')
 
 def normalize(x):
     x -= np.mean(x,1,keepdims=True)
-    x /= np.sqrt(np.mean(np.sum(np.power(x,2))))+eps
+    x /= np.sqrt(np.mean(np.sum(np.power(x,2),axis=0,keepdims=True),axis=1,keepdims=False))+eps
     return x
 
 def pwelch(x,n):
