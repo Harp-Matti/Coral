@@ -23,6 +23,7 @@ class NeuralNet(Classifier):
         common.set_input(self.interpreter, x)
         self.interpreter.invoke()
         class_result = classify.get_classes(self.interpreter, top_k=1)
+        print(class_result[0].score)
         return class_result[0].id
         
 class RandomForest(Classifier):
