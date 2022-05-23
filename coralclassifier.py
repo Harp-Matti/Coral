@@ -47,3 +47,6 @@ class RandomForest(Classifier):
         
     def run(self,x):
         return self.model.predict(self.features(x).reshape(1,-1))[0]
+        
+class SVM(Classifier):
+    self.model = load(model_file)

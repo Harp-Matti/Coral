@@ -12,7 +12,7 @@ if hostname == 'xenial-dog':
     model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
 elif hostname == 'rpi4-20220121':
     from tfclassifier import *
-    model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant.tflite')
+    model_file = os.path.join(script_dir, 'model_hfradio_resnet_cont_quant.tflite')
 else: 
     raise Exception('Unknown platform')
 
