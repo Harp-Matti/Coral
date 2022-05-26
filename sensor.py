@@ -9,10 +9,10 @@ script_dir = pathlib.Path(__file__).parent.absolute()
 hostname = socket.gethostname()
 if hostname == 'xenial-dog':
     from coralclassifier import *
-    model_file = os.path.join(script_dir, 'model_hfradio_resnet_quant_edgetpu.tflite')
+    model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant_edgetpu.tflite')
 elif hostname == 'rpi4-20220121':
     from tfclassifier import *
-    model_file = os.path.join(script_dir, 'model_hfradio_resnet_cont_quant.tflite')
+    model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant.tflite')
 else: 
     raise Exception('Unknown platform')
 
@@ -33,8 +33,9 @@ eps = 1.0e-10
 rf_file = os.path.join(script_dir, 'model_adaboost.joblib')
 
 def normalize(x):
-    x -= np.mean(x,1,keepdims=True)
-    x /= np.sqrt(np.mean(np.sum(np.power(x,2),axis=0,keepdims=True),axis=1,keepdims=False))+eps
+    #x -= np.mean(x,1,keepdims=True)
+    #x /= np.sqrt(np.mean(np.sum(np.power(x,2),axis=0,keepdims=True),axis=1,keepdims=False))+eps
+    x /= np.sqrt(np.amax(np.sum(np.power(x,2)),axis=1,keepdims=False))+eps
     return x
 
 def pwelch(x,n):
@@ -198,8 +199,8 @@ class Sensor:
                 raise Exception('Unknown message type')
                
 def main():
-    #comms = Client('192.168.3.113', 65000)
-    comms = Client('192.168.3.118', 65000)
+    comms = Client('192.168.3.113', 65000)
+    #comms = Client('192.168.3.118', 65000)
     sensor = Sensor(comms)
     sensor.wait()
 
