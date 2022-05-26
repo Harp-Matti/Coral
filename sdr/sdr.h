@@ -63,7 +63,7 @@ public:
 			activateStream();
 		}
 		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
-		deactivateStream();
+		//deactivateStream();
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
