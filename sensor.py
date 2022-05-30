@@ -199,8 +199,10 @@ class Sensor:
                 raise Exception('Unknown message type')
                
 def main():
-    #comms = Client('192.168.3.113', 65000)
-    comms = Client('192.168.3.118', 65000)
+    try:
+        comms = Client('192.168.3.113', 65000)
+    except:
+        comms = Client('192.168.3.118', 65000)
     sensor = Sensor(comms)
     sensor.wait()
 
