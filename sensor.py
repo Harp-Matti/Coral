@@ -93,7 +93,7 @@ class Sensor:
             i += 1
             
         if i < self.timeout:
-            s = np.asarray(self.device.read()).reshape((2,self.N_samples)) 
+            s = np.asarray(self.device.read()).reshape((self.N_samples,2)).T 
             x = s.reshape(1,2,self.N_samples,1)
             x_n = normalize(s).reshape(1,2,self.N_samples,1)
             class_result = self.classifiers[index].run(x_n)
