@@ -19,8 +19,12 @@ class NeuralNet(Classifier):
         self.interpreter = edgetpu.make_interpreter(model_file)
         self.interpreter.allocate_tensors()
         
+        params = common.input_details(self.interpreter, 'quantization_parameters')
+        self.scale = params['scales']
+        self.zero_point = params['zero_points']
+        
     def run(self,x):
-        common.set_input(self.interpreter, x)
+        common.set_input(self.interpreter, np.clip(x/self.scale+self.zero_point,0,255).astype(np.uint8))
         self.interpreter.invoke()
         class_result = classify.get_classes(self.interpreter, top_k=1)
         print(class_result[0].id, class_result[0].score)
