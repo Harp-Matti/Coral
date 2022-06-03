@@ -6,6 +6,9 @@ from joblib import load
 
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.multiclass import OneVsOneClassifier
+from sklearn.linear_model import SGDClassifier
+from sklearn.kernel_approximation import Nystroem
 
 class Classifier:
     pass
@@ -45,5 +48,27 @@ class RandomForest(Classifier):
         C63 = np.sum(s2*s*cs2*cs)-9*C42*M21-6*M21*M21*M21
         return np.asarray([np.absolute(C40)/(np.absolute(C42)+self.eps),np.absolute(C41)/(np.absolute(C42)+self.eps),np.power(np.absolute(C63),2)/(np.power(np.absolute(C42),3)+self.eps)])
 
+    def run(self,x):
+        return self.model.predict(self.features(x).reshape(1,-1))[0]
+        
+class SVM(Classifier):
+    def __init__(self, model_file):
+        model_and_map = load(model_file)
+        self.model = model_and_map[0]
+        self.feature_map = model_and_map[1]
+        
+    def pwelch(x,n):
+        psd = np.zeros((n))
+        w = np.hanning(n)
+        N = int(np.floor((len(x)-n)/(n/2))+1)
+        for i in range(N):
+            psd = psd + abs(np.fft.fft(x[int(i*n/2):int(i*n/2+n)] * w))**2/N
+        ma = np.amax(psd)    
+        return np.fft.fftshift(psd)/ma
+        
+    def features(self,x):
+        y = pwelch(np.squeeze(x[0,0,:,0]+1j*x[0,1,:,0]),128)
+        return self.feature_map.transform([y])
+        
     def run(self,x):
         return self.model.predict(self.features(x).reshape(1,-1))[0]

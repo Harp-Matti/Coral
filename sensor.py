@@ -31,6 +31,7 @@ from comms.comms import *
 eps = 1.0e-10
 
 rf_file = os.path.join(script_dir, 'model_adaboost.joblib')
+svm_file = os.path.join(script_dir, 'model_hfradio_sgd_pwelch_norm_map_128.joblib')
 
 def normalize(x):
     #x -= np.mean(x,1,keepdims=True)
@@ -73,6 +74,7 @@ class Sensor:
         self.classifiers = []
         self.classifiers.append(NeuralNet(model_file))
         self.classifiers.append(RandomForest(rf_file))
+        self.classifiers.append(SVM(svm_file))
         print('Classifiers loaded')
         
     def reset(self):
