@@ -70,7 +70,7 @@ class SVM(Classifier):
         return np.fft.fftshift(psd)/ma
         
     def features(self,x):
-        y = pwelch(np.squeeze(x[0,0,:,0]+1j*x[0,1,:,0]),128)
+        y = self.pwelch(np.squeeze(x[0,0,:,0]+1j*x[0,1,:,0]),128)
         return self.feature_map.transform([y])
         
     def run(self,x):
