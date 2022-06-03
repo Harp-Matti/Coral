@@ -60,7 +60,7 @@ class SVM(Classifier):
         self.model = model_and_map[0]
         self.feature_map = model_and_map[1]
         
-    def pwelch(x,n):
+    def pwelch(self,x,n):
         psd = np.zeros((n))
         w = np.hanning(n)
         N = int(np.floor((len(x)-n)/(n/2))+1)
