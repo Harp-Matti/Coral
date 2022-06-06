@@ -8,7 +8,7 @@ import socket
 script_dir = pathlib.Path(__file__).parent.absolute()
 from pycoral.utils import edgetpu
 
-if len(pycoral.utils.edgetpu.list_edge_tpus()) > 0:
+if len(edgetpu.list_edge_tpus()) > 0:
     print("Edge TPU detected")
     from coralclassifier import *
     model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant_edgetpu.tflite')
