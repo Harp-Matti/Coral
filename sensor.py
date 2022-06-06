@@ -6,15 +6,15 @@ import platform
 import socket
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-hostname = socket.gethostname()
-if hostname == 'xenial-dog':
+from pycoral.utils import edgetpu
+
+if len(pycoral.utils.edgetpu.list_edge_tpus()) > 0:
+    print("Edge TPU detected")
     from coralclassifier import *
     model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant_edgetpu.tflite')
-elif hostname == 'rpi4-20220121':
+else:
     from tfclassifier import *
     model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant.tflite')
-else: 
-    raise Exception('Unknown platform')
 
 import sys
 from time import sleep
