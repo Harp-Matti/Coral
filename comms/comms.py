@@ -28,8 +28,9 @@ class Run(Message):
         self.index = index
     
 class Result(Message):
-    def __init__(self,class_result,spectrum_result):
+    def __init__(self,class_result,rate_result,spectrum_result):
         self.class_result = class_result
+        self.rate_result = rate_result
         self.spectrum_result = spectrum_result
         
 class Get(Message):
@@ -67,8 +68,8 @@ class Comms:
                 return Run(index)
             elif message_type == 3:
                 _ ,class_result = unpack_from('ii',message)
-                spectrum_result = list(unpack_from(int((len(message)-8)/4)*'f',message,8))
-                return Result(class_result, spectrum_result)
+                rate_and_spectrum_result = list(unpack_from(int((len(message)-8)/4)*'f',message,8))
+                return Result(class_result,rate_and_spectrum_result[0], rate_and_spectrum_result[1:])
             elif message_type == 4:
                 _ ,ind = unpack_from('ii',message)
                 return Get(inds_to_parameters[ind])
@@ -92,7 +93,7 @@ class Comms:
                 self.sock.send(pack('ii', 2, message.index))
             elif message_type == Result:
                 N = len(message.spectrum_result)
-                self.sock.send(pack('ii%sf' % N, 3, message.class_result, *message.spectrum_result))
+                self.sock.send(pack('ii%sf' % N+1, 3, message.class_result, message.rate_result, *message.spectrum_result))
             elif message_type == Get:
                 ind = parameters_to_inds[message.parameter]
                 self.sock.send(pack('ii', 4, ind))

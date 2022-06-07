@@ -4,6 +4,7 @@ import os
 import pathlib
 import platform
 import socket
+import time
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 from pycoral.utils import edgetpu
@@ -98,9 +99,11 @@ class Sensor:
             s = np.asarray(self.device.read()).reshape((self.N_samples,2)).T 
             x = s.reshape(1,2,self.N_samples,1)
             x_n = normalize(s).reshape(1,2,self.N_samples,1)
+            start = time.perf_counter()
             class_result = self.classifiers[index].run(x_n)
+            rate = 1/(time.perf_counter()-start) 
             spectrum = pwelch(x,128)
-            self.comms.send(Result(class_result,spectrum))
+            self.comms.send(Result(class_result,rate,spectrum))
             print('Result sent')
         else:
             self.comms.send(Failure())
