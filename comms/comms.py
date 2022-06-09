@@ -115,12 +115,19 @@ class Server(Comms):
 
         # Bind the socket to the port
         print(f'Starting UDP server on port {port}')
-        self.server_socket.bind(('',port))
-        self.server_socket.listen(5)
-        self.sock, client_address = self.server_socket.accept()
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            self.server_socket.bind(('',port))
+            self.bound = True
+            self.server_socket.listen(5)
+            self.sock, client_address = self.server_socket.accept()
+        except:
+            self.bound = false
+            raise Exception('Failed to connect')
 
-    def __del__(self):    
-        self.sock.close()
+    def __del__(self):  
+        if self.bound:  
+            self.sock.close()
         self.server_socket.close()
         
 class Client(Comms):

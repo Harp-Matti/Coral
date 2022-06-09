@@ -54,7 +54,7 @@ class Sensor:
     def __init__(self, comms):
         self.comms = comms
         
-        self.N_classifications = 3
+        self.N_classifications = 1
         self.N_samples = 2*1024
         self.sample_length = self.N_classifications*self.N_samples
         self.device = SDR(self.sample_length)
