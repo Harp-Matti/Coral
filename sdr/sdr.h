@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <chrono>
 
 #include <iostream>
 
@@ -59,11 +60,15 @@ public:
 		void *buffs[] = {buff};
 		int flags;
 		long long time_ns;
+		clock_t now = clock();
 		if (!streamActive) {
 			activateStream();
+		} else if (((float) now - start)/CLOCKS_PER_SEC > reset_time) {
+		    resetStream();
 		}
+		start = now;
 		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
-		deactivateStream();
+		//deactivateStream();
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
 	}
@@ -89,6 +94,11 @@ public:
 	void deactivateStream() {
 		sdr->deactivateStream(rx_stream, 0, 0);
 		streamActive = false;
+	}
+	
+	void resetStream() {
+	    deactivateStream();
+	    activateStream();
 	}
 	
 	double getSampleRate(){
@@ -191,4 +201,6 @@ public:
 	std::string name;
 	bool streamActive = false;
 	int N_samples;
+	float reset_time = 1.0;
+	clock_t start = 0;
 };
