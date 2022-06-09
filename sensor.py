@@ -45,7 +45,7 @@ def pwelch(x,n):
     w = np.hanning(n)
     N = int(np.floor((x.size/2-n)/(n/2))+1)
     for i in range(N):
-        psd = psd + abs(np.fft.fft((x[0,0,int(i*n/2):int(i*n/2+n),0] + 1j*x[0,1,int(i*n/2):int(i*n/2+n),0])* w))**2/N
+        psd = psd + abs(np.fft.fft((x[0,0,int(i*n/2):int(i*n/2+n),0] + 1j*x[0,1,int(i*n/2):int(i*n/2+n),0])* w))**2/(N*n)
     #ma = np.amax(psd)
     #psd = psd/ma
     return psd.tolist()
@@ -54,8 +54,10 @@ class Sensor:
     def __init__(self, comms):
         self.comms = comms
         
+        self.N_classifications = 3
         self.N_samples = 2*1024
-        self.device = SDR(self.N_samples)
+        self.sample_length = self.N_classifications*self.N_samples
+        self.device = SDR(self.sample_length)
         r = self.device.getRates()
         self.rates = []
         for i in range(int(len(r)/2)):
@@ -80,7 +82,7 @@ class Sensor:
         
     def reset(self):
         del self.device
-        self.device = SDR(self.N_samples)
+        self.device = SDR(self.sample_length)
         self.set_parameter('frequency',self.values[0])
         self.set_parameter('bandwidth',self.values[1])
         self.set_parameter('sample_rate',self.values[2])
@@ -89,20 +91,24 @@ class Sensor:
         
     def run(self,index): 
         i = 0
-        while self.device.receive() < self.N_samples and i < self.timeout:
+        while self.device.receive() < self.sample_length and i < self.timeout:
             self.reset()
             for j in range(len(self.params)):
                 self.set_parameter(self.params[j],self.values[j])
             i += 1
             
         if i < self.timeout:
-            s = np.asarray(self.device.read()).reshape((self.N_samples,2)).T 
-            x = s.reshape(1,2,self.N_samples,1)
-            x_n = normalize(s).reshape(1,2,self.N_samples,1)
+            s = np.asarray(self.device.read()).reshape((self.sample_length,2)).T
+            x_a = []
+            for j in range(self.N_classifications):
+                x_a.append(normalize(s[:,j*self.N_samples:(j+1)*N_samples]).reshape(1,2,self.N_samples,1))
+            result = []
             start = time.perf_counter()
-            class_result = self.classifiers[index].run(x_n)
-            rate = 1/(time.perf_counter()-start) 
-            spectrum = pwelch(x,128)
+            for j in range(self.N_classifications):
+                result.append(self.classifiers[index].run(x_a[j]))
+            rate = self.N_classifications/(time.perf_counter()-start)
+            class_result = max(set(result), key = result.count) 
+            spectrum = pwelch(s.reshape(1,2,self.N_sample_length,1),128)
             self.comms.send(Result(class_result,rate,spectrum))
             print('Result sent')
         else:
