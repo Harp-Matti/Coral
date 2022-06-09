@@ -63,7 +63,7 @@ public:
 		clock_t now = clock();
 		if (!streamActive) {
 			activateStream();
-		} else if (((float) now - start)/CLOCKS_PER_SEC > reset_time) {
+		} else if (((float) (now - start))/CLOCKS_PER_SEC > reset_time) {
 		    resetStream();
 		}
 		start = now;
