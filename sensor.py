@@ -108,7 +108,7 @@ class Sensor:
                 result.append(self.classifiers[index].run(x_a[j]))
             rate = self.N_classifications/(time.perf_counter()-start)
             class_result = max(set(result), key = result.count) 
-            spectrum = pwelch(s.reshape(1,2,self.N_sample_length,1),128)
+            spectrum = pwelch(s.reshape(1,2,self.sample_length,1),128)
             self.comms.send(Result(class_result,rate,spectrum))
             print('Result sent')
         else:
