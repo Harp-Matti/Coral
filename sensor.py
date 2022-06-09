@@ -101,7 +101,7 @@ class Sensor:
             s = np.asarray(self.device.read()).reshape((self.sample_length,2)).T
             x_a = []
             for j in range(self.N_classifications):
-                x_a.append(normalize(s[:,j*self.N_samples:(j+1)*N_samples]).reshape(1,2,self.N_samples,1))
+                x_a.append(normalize(s[:,j*self.N_samples:(j+1)*self.N_samples]).reshape(1,2,self.N_samples,1))
             result = []
             start = time.perf_counter()
             for j in range(self.N_classifications):
