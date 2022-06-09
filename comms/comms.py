@@ -119,6 +119,10 @@ class Server(Comms):
         self.server_socket.listen(5)
         self.sock, client_address = self.server_socket.accept()
 
+    def __del__(self):    
+        self.sock.close()
+        self.server_socket.close()
+        
 class Client(Comms):
     def __init__(self,host,port):   
         # Create a UDP socket
@@ -127,3 +131,6 @@ class Client(Comms):
         # Bind the socket to the port
         self.server_address = (host, port)
         self.sock.connect(self.server_address)
+        
+    def __del__(self):
+        self.sock.close()
