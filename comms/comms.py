@@ -93,7 +93,7 @@ class Comms:
                 self.sock.send(pack('ii', 2, message.index))
             elif message_type == Result:
                 N = len(message.spectrum_result)
-                self.sock.send(pack('ii%sf' % N+1, 3, message.class_result, message.rate_result, *message.spectrum_result))
+                self.sock.send(pack('iif%sf' % N, 3, message.class_result, message.rate_result, *message.spectrum_result))
             elif message_type == Get:
                 ind = parameters_to_inds[message.parameter]
                 self.sock.send(pack('ii', 4, ind))
