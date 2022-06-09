@@ -64,7 +64,7 @@ public:
 		if (!streamActive) {
 			activateStream();
 		} else if (((float) (now - start))/CLOCKS_PER_SEC > reset_time) {
-		    resetStream();
+		    reopenStream()
 		}
 		start = now;
 		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
@@ -101,6 +101,14 @@ public:
 	    activateStream();
 	}
 	
+	void reopenStream() {
+	    if (streamActive){
+			deactivateStream();	
+		}
+		sdr->closeStream(rx_stream);
+	    rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
+	}
+	
 	double getSampleRate(){
 		return sdr->getSampleRate(SOAPY_SDR_RX, 0);
 	}
@@ -110,6 +118,7 @@ public:
 			deactivateStream();	
 		}
 		sdr->setSampleRate(SOAPY_SDR_RX, 0, rate);
+		reopenStream()
 	}
 	
 	double getBandwidth(){
@@ -121,6 +130,7 @@ public:
 			deactivateStream();	
 		}
 		sdr->setBandwidth(SOAPY_SDR_RX, 0, bw);
+		reopenStream()
 	}
 	
 	double getFrequency(){
@@ -133,6 +143,7 @@ public:
 		}
 		if (freq >= ranges.front().minimum() && freq <= ranges.back().maximum()){
 			sdr->setFrequency(SOAPY_SDR_RX, 0, freq);
+			reopenStream()
 		} else {
 			fprintf(stderr, "Frequency out of bounds\n");
 		}
@@ -147,6 +158,7 @@ public:
 			deactivateStream();	
 		}
 		sdr->setGainMode(SOAPY_SDR_RX, 0, automatic);
+		reopenStream()
 	}
 	
 	double getGain(){
@@ -158,6 +170,7 @@ public:
 			deactivateStream();	
 		}
 		sdr->setGain(SOAPY_SDR_RX, 0, gain);
+		reopenStream()
 	}
 	
 	void listRates(){
