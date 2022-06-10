@@ -204,6 +204,10 @@ public:
 		return output;	
 	}
 	
+	std::string getDriver() {
+	    return sdr->getDriverKey();
+	}
+	
 	SoapySDR::Device *sdr;
 	SoapySDR::RangeList bandwidths;
 	SoapySDR::RangeList ranges;
