@@ -58,7 +58,7 @@ class Sensor:
         self.N_samples = 2*1024
         self.sample_length = self.N_classifications*self.N_samples
         self.device = SDR(self.sample_length)
-        print(self.device.getDriver)
+        print(self.device.getDriver())
         r = self.device.getRates()
         self.rates = []
         for i in range(int(len(r)/2)):
