@@ -78,9 +78,9 @@ class Sensor:
             self.defaults = [100e6, 3e6, 3e6, 49]
            
         self.timeout = 10
-        self.values = []
+        self.values = self.defaults
         for i in range(len(self.params)):
-            self.values.append(self.set_parameter(self.params[i],self.defaults[i]))
+            self.set_parameter(self.params[i],self.defaults[i])
         print('SDR '+ driver +' set')
             
         self.classifiers = []
