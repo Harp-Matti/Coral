@@ -57,8 +57,10 @@ class Sensor:
         self.N_classifications = 1
         self.N_samples = 2*1024
         self.sample_length = self.N_classifications*self.N_samples
+        
         self.device = SDR(self.sample_length)
-        print(self.device.getDriver())
+        
+        driver = self.device.getDriver()
         r = self.device.getRates()
         self.rates = []
         for i in range(int(len(r)/2)):
@@ -68,13 +70,19 @@ class Sensor:
         for i in range(int(len(b)/2)):
             self.widths.append((b[2*i],b[2*i+1]))        
         self.gains = self.device.getGains()
-        print('SDR set')
+        
+        self.params = ['frequency','bandwidth','sample_rate','gain']
+        if driver == 'SDRPlay':
+            self.defaults = [100e6, 6e6, 6e6, 48]
+        else:
+            self.defaults = [100e6, 3e6, 3e6, 49]
            
         self.timeout = 10
-        self.params = ['frequency','bandwidth','sample_rate','gain']
         self.values = []
-        for par in self.params:
-            self.values.append(self.get_parameter(par))
+        for i in range(len(self.params)):
+            self.values.append(self.set_parameter(self.params[i],self.defaults[i]))
+        print('SDR '+ driver +' set')
+            
         self.classifiers = []
         self.classifiers.append(NeuralNet(model_file))
         self.classifiers.append(RandomForest(rf_file))
