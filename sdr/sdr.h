@@ -64,9 +64,9 @@ public:
 		clock_t now = clock();
 		if (!streamActive) {
 			activateStream();
-		} else if (((float) (now - start))/CLOCKS_PER_SEC > reset_time) {
-		    reopenStream();
-		}
+		} //else if (((float) (now - start))/CLOCKS_PER_SEC > reset_time) {
+		  //  reopenStream();
+		//}
 		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
 		//deactivateStream();
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
