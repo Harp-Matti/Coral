@@ -44,7 +44,7 @@ public:
 			fprintf( stderr, "Failed\n");
 			SoapySDR::Device::unmake(sdr);
 		}
-		start = now;
+		start = clock();
 		
 		setGainMode(false);
 	}
@@ -107,7 +107,7 @@ public:
 		}
 		sdr->closeStream(rx_stream);
 	    rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
-	    start = now;
+	    start = clock();
 	}
 	
 	double getSampleRate(){
