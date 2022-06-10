@@ -72,7 +72,7 @@ class Sensor:
         self.gains = self.device.getGains()
         
         self.params = ['frequency','bandwidth','sample_rate','gain']
-        if driver == 'SDRPlay':
+        if driver == 'SDRplay':
             self.defaults = [100e6, 6e6, 6e6, 48]
         else:
             self.defaults = [100e6, 3e6, 3e6, 49]
