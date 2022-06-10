@@ -44,6 +44,7 @@ public:
 			fprintf( stderr, "Failed\n");
 			SoapySDR::Device::unmake(sdr);
 		}
+		start = now;
 		
 		setGainMode(false);
 	}
@@ -66,7 +67,6 @@ public:
 		} else if (((float) (now - start))/CLOCKS_PER_SEC > reset_time) {
 		    reopenStream();
 		}
-		start = now;
 		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
 		//deactivateStream();
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
@@ -107,6 +107,7 @@ public:
 		}
 		sdr->closeStream(rx_stream);
 	    rx_stream = sdr->setupStream( SOAPY_SDR_RX, SOAPY_SDR_CF32);
+	    start = now;
 	}
 	
 	double getSampleRate(){

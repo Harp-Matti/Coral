@@ -18,7 +18,6 @@ class Classifier:
     
 class NeuralNet(Classifier):
     def __init__(self, model_file):
-        # TODO: different functionality for nn, svm or rf based on filename
         self.interpreter = edgetpu.make_interpreter(model_file)
         self.interpreter.allocate_tensors()
         
@@ -30,7 +29,7 @@ class NeuralNet(Classifier):
         common.set_input(self.interpreter, np.clip(x/self.scale+self.zero_point,0,255).astype(np.uint8))
         self.interpreter.invoke()
         class_result = classify.get_classes(self.interpreter, top_k=1)
-        print(class_result[0].id, class_result[0].score)
+        #print(class_result[0].id, class_result[0].score)
         return class_result[0].id
         
 class RandomForest(Classifier):
