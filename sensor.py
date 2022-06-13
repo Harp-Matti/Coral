@@ -95,7 +95,7 @@ class Sensor:
         self.set_parameter('frequency',self.values[0])
         self.set_parameter('bandwidth',self.values[1])
         self.set_parameter('sample_rate',self.values[2])
-        self.set_parameter('gain',self.values[2])
+        self.set_parameter('gain',self.values[3])
         print('Device reset')
         
     def run(self,index): 
