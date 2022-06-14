@@ -58,6 +58,7 @@ public:
 	}
 	
 	int receive() {
+	    int ret = -1;
 		void *buffs[] = {buff};
 		int flags;
 		long long time_ns;
@@ -67,7 +68,7 @@ public:
 		} //else if (((float) (now - start))/CLOCKS_PER_SEC > reset_time) {
 		  //  reopenStream();
 		//}
-		int ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
+		ret = sdr->readStream(rx_stream, buffs, N_samples, flags, time_ns, 1e5);
 		//deactivateStream();
 		//printf("ret = %d, flags = %d, time_ns = %lld\n", ret, flags, time_ns);
 		return ret;
