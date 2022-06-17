@@ -7,15 +7,28 @@ import socket
 import time
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-from pycoral.utils import edgetpu
+try:
+    from pycoral.utils import edgetpu
+    edge = len(edgetpu.list_edge_tpus()) > 0
+except:
+    edge = False
+    try: 
+        from rknn.api import RKNN
+        rockchip = True
+    except:
+        rockchip = False
 
-if len(edgetpu.list_edge_tpus()) > 0:
+if edge:
     print("Edge TPU detected")
     from coralclassifier import *
     model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant_edgetpu.tflite')
 else:
-    from tfclassifier import *
-    model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant.tflite')
+    if rockchip:
+        from rknnclassifier import *
+        model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant.tflite')
+    else:
+        from tfclassifier import *
+        model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant.tflite')
 
 import sys
 from time import sleep
