@@ -1,4 +1,4 @@
-from rknn.api import RKNN
+from rknnlite.api import RKNNLite
 
 import numpy as np
 
@@ -15,7 +15,7 @@ class Classifier:
     
 class NeuralNet(Classifier):
     def __init__(self, model_file):
-        self.interpreter = RKNN()
+        self.interpreter = RKNNLite()
         #self.interpreter.load_rknn(path=model_file)
         #self.interpreter.init_runtime()
         
