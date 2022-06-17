@@ -16,8 +16,8 @@ class Classifier:
 class NeuralNet(Classifier):
     def __init__(self, model_file):
         self.interpreter = RKNNLite()
-        #self.interpreter.load_rknn(path=model_file)
-        #self.interpreter.init_runtime()
+        self.interpreter.load_rknn(path=model_file)
+        self.interpreter.init_runtime()
         
         #params = common.input_details(self.interpreter, 'quantization_parameters')
         #self.scale = params['scales']

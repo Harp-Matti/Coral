@@ -25,7 +25,7 @@ if edge:
 else:
     if rockchip:
         from rknnclassifier import *
-        model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant.tflite')
+        model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant_rknn.rknn')
     else:
         from tfclassifier import *
         model_file = os.path.join(script_dir, 'model_hfradio_resnet_maxnorm_qaware_quant.tflite')
