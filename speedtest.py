@@ -45,7 +45,7 @@ def normalize(x):
   
 class Sensor:
     def __init__(self): 
-        self.N_classifications = 1
+        self.N_classifications = 10
         self.N_samples = 2*1024
         self.sample_length = self.N_classifications*self.N_samples
             
