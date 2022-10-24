@@ -71,8 +71,8 @@ class RandomForest(Classifier):
         A = np.mean(np.absolute(s/np.sqrt(M21)))
         P = np.unwrap(np.angle(s))
         F = np.gradient(P)
-        SP = np.std(P,1)
-        SF = np.std(F,1)
+        SP = np.std(P)
+        SF = np.std(F)
         
         return np.asarray([np.absolute(C20/(C21+self.eps)), np.absolute(np.sqrt(C40)/(C21+self.eps)), np.absolute(np.sqrt(C41)/(C21+self.eps)), np.absolute(np.sqrt(C42)/(C21+self.eps)), np.absolute(np.cbrt(C60)/(C21+self.eps)), np.absolute(np.cbrt(C61)/(C21+self.eps)), np.absolute(np.cbrt(C62)/(C21+self.eps)), np.absolute(np.cbrt(C63)/(C21+self.eps)), A, SP, SF])
         
