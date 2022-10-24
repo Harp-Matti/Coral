@@ -68,7 +68,7 @@ class RandomForest(Classifier):
         C62 = M62-6*M20*M42-8*M21*M41-M22*M40+6*np.power(M20,2)*M22+24*np.power(M21,2)*M20
         C63 = M63-9*M21*M42+12*np.power(M21,3)-3*M20*M43-3*M22*M41+18*M20*M21*M22
         
-        A = np.mean(np.absolute(s./sqrt(M21)))
+        A = np.mean(np.absolute(s/np.sqrt(M21)))
         P = np.unwrap(np.angle(s))
         F = np.gradient(P)
         SP = np.std(P,1)
