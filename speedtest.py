@@ -35,7 +35,7 @@ from timeit import default_timer as timer
 eps = 1.0e-10
 
 model_files[3] = os.path.join(script_dir, 'model_hfradio_sgd_pwelch_norm_map_128.joblib')
-model_files[4] = os.path.join(script_dir, 'model_adaboost_11.joblib')
+model_files[4] = os.path.join(script_dir, 'model_adaboost_hfradio_11.joblib')
 
 def normalize(x):
     x /= np.sqrt(np.amax(np.sum(np.power(x,2),axis=0,keepdims=False)))+eps
