@@ -77,7 +77,7 @@ class RandomForest(Classifier):
         return np.asarray([np.absolute(C20/(C21+self.eps)), np.absolute(np.sqrt(C40)/(C21+self.eps)), np.absolute(np.sqrt(C41)/(C21+self.eps)), np.absolute(np.sqrt(C42)/(C21+self.eps)), np.absolute(np.power(C60,1.0/3)/(C21+self.eps)), np.absolute(np.power(C61,1.0/3)/(C21+self.eps)), np.absolute(np.power(C62,1.0/3)/(C21+self.eps)), np.absolute(np.power(C63,1.0/3)/(C21+self.eps)), A, SP, SF])
         
     def run(self,x):
-        return self.model.predict(self.features(x))[0]
+        return self.model.predict(self.features(x).reshape(1,-1))[0]
         
 class SVM(Classifier):
     def __init__(self, model_file):
