@@ -60,7 +60,7 @@ class Sensor:
         print('Classifiers loaded')
         
     def run(self,index): 
-        s = normalize(rng.standard_normal((2,self.N_samples))).reshape((1,2,self.N_samples,1))
+        s = normalize(self.rng.standard_normal((2,self.N_samples))).reshape((1,2,self.N_samples,1))
         start = time.perf_counter()
         for j in range(self.N_classifications):
             self.classifiers[index].run(s)
