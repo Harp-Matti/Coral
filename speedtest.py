@@ -3,6 +3,8 @@ import pathlib
 import platform
 import time
 
+import dill
+
 script_dir = pathlib.Path(__file__).parent.absolute()
 try:
     from pycoral.utils import edgetpu
