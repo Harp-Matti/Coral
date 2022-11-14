@@ -233,7 +233,8 @@ class Sensor:
                
 def main():
     try:
-        comms = Client('192.168.3.118', 65000)
+        comms = Client('192.168.3.123', 65000)
+        #comms = Client('192.168.3.118', 65000)
     except:
         comms = Client('192.168.3.113', 65000)
     sensor = Sensor(comms)
